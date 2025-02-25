@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    public event Action _enemyTurnEvent;
-
     private EnemyBase[] enemies;
+    private event Action _enemyTurnEvent;
 
     public bool IsAnnihilation => !enemies.Any(enemy => enemy.GetIsAlive);
 
