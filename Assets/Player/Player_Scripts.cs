@@ -113,6 +113,7 @@ public class Player_Scripts : MonoBehaviour
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
             PlayerTurn = false;
+            TurnEndFlag = true;
             //ƒ^[ƒ“‚ğ•ÏX‚·‚é‚Ì‚ğ“n‚·ˆ—
 
             //
@@ -155,13 +156,14 @@ public class Player_Scripts : MonoBehaviour
 
     public bool CheckPlayerEnd()
     {
-        return isShooted && shootTime < checkDelay && rb.velocity.magnitude < 0.1f && PlayerTurn;
+        return isShooted && shootTime < checkDelay && rb.velocity.magnitude < 0.1f && TurnEndFlag;
     }
 
     private void SwitchPlaerActive()
     {
-        PlayerTurn = !PlayerTurn;
+        PlayerTurn = true;
         isShooted = false;
+        TurnEndFlag = false;
     }
 
 }

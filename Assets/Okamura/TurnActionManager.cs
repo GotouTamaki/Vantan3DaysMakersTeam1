@@ -13,18 +13,21 @@ public class TurnActionManager : MonoBehaviour
 
     void Start()
     {
-        //GameManager‚ÉFunc<GameStateKari>‚ğ“o˜^‚·‚é
+        FindAnyObjectByType<GameManager>().OnGameStateChanged += ChangeGameState;
         //PlayerManager,EnemyManager“™‚©‚çƒ^[ƒ“Ø‚è‘Ö‚¦‚ÉØ‚è‘Ö‚¦‚éˆ—‚ğ“o˜^‚µ‚Ä‚à‚ç‚¤
     }
 
-    private void ChangeGameState()
+    private void ChangeGameState(GameState gameState)
     {
-        /*
-        switch()
+        switch(gameState)
         {
-            
+            case GameState.PlayerTurn:
+                InvokeSwitchPlayerTurn();
+                break; 
+            case GameState.EnemyTurn:
+                InvokeSwitchEnemyTurn();
+                break;
         }
-        */
     }
 
     /// <summary>
@@ -40,5 +43,10 @@ public class TurnActionManager : MonoBehaviour
     private void InvokeSwitchEnemyTurn()
     {
         SwitchEnemyTurn.Invoke();
+    }
+    private void OnDisable()
+    {
+
+        FindAnyObjectByType<GameManager>().OnGameStateChanged -= ChangeGameState;
     }
 }

@@ -10,7 +10,8 @@ using System;
 public enum GameState
 {
     Title,
-    Playing,
+    PlayerTurn,
+    EnemyTurn,
     Pause,
     GameOver,
     Result
@@ -34,6 +35,10 @@ public class GameManager : MonoBehaviour
     //GameManagerのインスタンスを格納する変数
     public static GameManager Instance { get; private set; }
     public GameState currentState { get; private set; } = GameState.Title;
+
+
+    //kattenituika
+    Player_Scripts _playerScripts;
 
     //GameManagerのインスタンスが存在するかどうかを返すプロパティ
     private void Awake()
@@ -59,6 +64,10 @@ public class GameManager : MonoBehaviour
         {
             LoadScene(TITLE_SCENE_NAME);
         }
+
+        _playerScripts = FindAnyObjectByType<Player_Scripts>();
+        //kari
+        currentState = GameState.PlayerTurn;
     }
 
     void Update()
@@ -66,6 +75,19 @@ public class GameManager : MonoBehaviour
      if(Input.GetKeyDown(KeyCode.Space))
         {
             NextLoadScene();
+        }
+        if(currentState == GameState.PlayerTurn && _playerScripts.CheckPlayerEnd())
+        {
+            Debug.Log("StateChange EnemyTurn");
+            currentState = GameState.EnemyTurn;
+            OnGameStateChanged(GameState.EnemyTurn);
+        }
+        //後半のTrueはエネミーの行動完了を待つ
+        if (currentState == GameState.EnemyTurn && true)
+        {
+            Debug.Log("StateChange PlayerTurn");
+            currentState = GameState.PlayerTurn;
+            OnGameStateChanged(GameState.PlayerTurn);
         }
     }
 
