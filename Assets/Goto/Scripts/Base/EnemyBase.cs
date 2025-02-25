@@ -1,14 +1,15 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public abstract class EnemyBase : MonoBehaviour
 {
+    protected OutOfBoundsChecker _outOfBoundsChecker;
     protected Rigidbody _rigidbody;
     protected bool _isAlive = true;
 
-    public bool GetIsAlive => _isAlive;
-
     public Vector3 GetVelocity => _rigidbody.velocity;
+
+    public bool GetIsAlive => _isAlive;
 
     public void SetIsAlive(bool isAlive)
     {
@@ -17,6 +18,7 @@ public abstract class EnemyBase : MonoBehaviour
 
     protected virtual void Start()
     {
+        _outOfBoundsChecker = FindAnyObjectByType<OutOfBoundsChecker>();
         _rigidbody = GetComponent<Rigidbody>();
     }
 

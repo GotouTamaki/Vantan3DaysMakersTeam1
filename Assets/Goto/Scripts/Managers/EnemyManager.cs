@@ -1,21 +1,43 @@
-using System;
+﻿using System;
 using System.Linq;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    private EnemyBase[] enemies;
+    private EnemyBase[] _enemies;
+    private OutOfBoundsChecker _outOfBoundsChecker;
+    private TurnActionManager _turnActionManager;
     private event Action _enemyTurnEvent;
 
-    public bool IsAnnihilation => !enemies.Any(enemy => enemy.GetIsAlive);
+    public bool IsAnnihilation => !_enemies.Any(enemy => enemy.GetIsAlive);
+
+    private void OnEnable()
+    {
+        _turnActionManager = FindAnyObjectByType<TurnActionManager>();
+        _turnActionManager.SwitchEnemyTurn.AddListener(Execute);
+    }
 
     void Start()
     {
-        enemies = FindObjectsByType<EnemyBase>(FindObjectsSortMode.None);
+        _enemies = FindObjectsByType<EnemyBase>(FindObjectsSortMode.None);
+        _outOfBoundsChecker = FindAnyObjectByType<OutOfBoundsChecker>();
 
-        foreach (EnemyBase enemy in enemies)
+        foreach (EnemyBase enemy in _enemies)
         {
             _enemyTurnEvent += enemy.Execute;
+        }
+    }
+
+    public void CheckEnemiesIsAlive()
+    {
+        foreach (EnemyBase enemy in _enemies)
+        {
+            bool isAlive = _outOfBoundsChecker.CheckOutOfBounds(enemy.transform.position);
+
+            if (isAlive ^ enemy.GetIsAlive)
+            {
+                enemy.SetIsAlive(isAlive);
+            }
         }
     }
 
@@ -26,9 +48,11 @@ public class EnemyManager : MonoBehaviour
 
     private void OnDisable()
     {
-        foreach (EnemyBase enemy in enemies)
+        foreach (EnemyBase enemy in _enemies)
         {
             _enemyTurnEvent -= enemy.Execute;
         }
+
+        _turnActionManager.SwitchEnemyTurn.RemoveListener(Execute);
     }
 }
