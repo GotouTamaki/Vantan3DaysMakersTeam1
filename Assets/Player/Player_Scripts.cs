@@ -6,9 +6,15 @@ using static Unity.VisualScripting.Member;
 
 public class Player_Scripts : MonoBehaviour
 {
+    // ドラッグ開始位置
     private Vector3 dragStartPosition;
+    // ドラッグ終了位置
     private Vector3 dragEndPosition;
+    // ドラッグ中の位置
+    private Vector3 dragPosition;
+    // ドラッグ中かどうか
     private bool isDragging = false;
+
     private bool PlayerTurn = true;
     private bool isShooted = false;
     private Rigidbody rb;
@@ -19,6 +25,8 @@ public class Player_Scripts : MonoBehaviour
     private float checkDelay = 1.0f; // 速度チェックを開始するまでの遅延時間
 
     public bool TurnEndFlag= false;
+    public Vector3 GetDragVelocityPosition { get => dragStartPosition- dragPosition;}
+    public Vector3 GetPlayerPosition { get => transform.position; }
 
     [SerializeField]
     // ボールの方向をぼかす度合い　0.0f ~ 1.0f(ぼかさない～ぼかす)
@@ -49,13 +57,16 @@ public class Player_Scripts : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         // マウスの左ボタンが押されたとき
         if (Input.GetMouseButtonDown(0)&& PlayerTurn&&!isShooted)
         {
             dragStartPosition = GetWorldPositionOnPlane(Input.mousePosition, 0);
             isDragging = true;
         }
-
+        if (isDragging) {
+        dragPosition = GetWorldPositionOnPlane(Input.mousePosition, 0);
+        }
         // マウスの左ボタンが離されたとき
         if (Input.GetMouseButtonUp(0) && isDragging)
         {
