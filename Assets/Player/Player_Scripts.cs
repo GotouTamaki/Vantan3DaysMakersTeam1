@@ -65,7 +65,9 @@ public class Player_Scripts : MonoBehaviour
             isDragging = true;
         }
         if (isDragging) {
+
         dragPosition = GetWorldPositionOnPlane(Input.mousePosition, 0);
+            transform.rotation = Quaternion.LookRotation(-GetDragVelocityPosition);
         }
         // マウスの左ボタンが離されたとき
         if (Input.GetMouseButtonUp(0) && isDragging)
@@ -87,7 +89,7 @@ public class Player_Scripts : MonoBehaviour
             force = BlurBall(force, blurGauge);
 
             force = force * ballForce;
-
+           // transform.rotation = Quaternion.LookRotation(-force);
             rb.AddForce(force, ForceMode.Impulse);
             //Debug.Log("Drag Direction: " + force);
 
@@ -96,7 +98,16 @@ public class Player_Scripts : MonoBehaviour
         }
         shootTime -= 1.0f;
 
-        if (isShooted && Time.time - shootTime > checkDelay && rb.velocity.magnitude < 0.01f && PlayerTurn)
+        if (isShooted&&PlayerTurn)
+        {
+            transform.rotation = Quaternion.LookRotation(-rb.velocity);
+        }
+
+
+
+
+
+        if (isShooted && shootTime < checkDelay && rb.velocity.magnitude < 0.01f && PlayerTurn)
         {
             Debug.Log("ターン終了！！");
             rb.velocity = Vector3.zero;
