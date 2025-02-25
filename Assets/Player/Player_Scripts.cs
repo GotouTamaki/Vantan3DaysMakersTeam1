@@ -29,11 +29,21 @@ public class Player_Scripts : MonoBehaviour
     [SerializeField]
     private float dragCoefficient = 0.8f; // ë¨ìxå∏êäåWêî
 
+    private void OnEnable()
+    {
+        FindAnyObjectByType<TurnActionManager>().SwitchPlayerTurn.AddListener(SwitchPlaerActive);
+    }
+
+    private void OnDisable()
+    {
+        FindAnyObjectByType<TurnActionManager>().SwitchPlayerTurn.RemoveListener(SwitchPlaerActive);
+    }
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         mainCamera = Camera.main;
+
     }
 
     // Update is called once per frame
@@ -125,4 +135,11 @@ public class Player_Scripts : MonoBehaviour
     {
         return isShooted && shootTime < checkDelay && rb.velocity.magnitude < 0.1f && PlayerTurn;
     }
+
+    private void SwitchPlaerActive()
+    {
+        PlayerTurn = !PlayerTurn;
+        isShooted = false;
+    }
+
 }
