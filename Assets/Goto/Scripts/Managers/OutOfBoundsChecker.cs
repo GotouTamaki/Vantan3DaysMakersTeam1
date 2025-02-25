@@ -3,7 +3,7 @@
 public class OutOfBoundsChecker : MonoBehaviour
 {
     [SerializeField] private Vector3 _center;
-    [SerializeField] private Vector3 _size = new Vector3(1, 1, 1);
+    [SerializeField] private Vector3 _size = new Vector3(1f, 1f, 1f);
 
     public bool CheckOutOfBounds(Vector3 objectPosition)
     {
