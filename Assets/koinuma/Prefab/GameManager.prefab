@@ -45,6 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a01b778c486dd0449718986e6b633a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyManager: {fileID: 0}
+  _outOfBoundsChecker: {fileID: 0}
+  _playerScripts: {fileID: 0}
 --- !u!114 &4495505078750671593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57,7 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8ba4b984aa97c468f314aae48d76db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _titleSceneName: TItle
+  _titleSceneName: Title
   _stage1SceneName: MainGameCompleted
   _stage2SceneName: 
   _resultSceneName: ResultCompleted

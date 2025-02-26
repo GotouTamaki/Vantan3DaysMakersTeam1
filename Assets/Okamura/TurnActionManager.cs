@@ -15,7 +15,7 @@ public class TurnActionManager : MonoBehaviour
 
     void Start()
     {
-        FindAnyObjectByType<GameManager>().OnGameStateChanged += ChangeGameState;
+        GameManager.Instance.OnGameStateChanged += ChangeGameState;
         //PlayerManager,EnemyManager“™‚©‚çƒ^[ƒ“Ø‚è‘Ö‚¦‚ÉØ‚è‘Ö‚¦‚éˆ—‚ğ“o˜^‚µ‚Ä‚à‚ç‚¤
     }
 
@@ -50,7 +50,6 @@ public class TurnActionManager : MonoBehaviour
     }
     private void OnDisable()
     {
-
-        FindAnyObjectByType<GameManager>().OnGameStateChanged -= ChangeGameState;
+        GameManager.Instance.OnGameStateChanged -= ChangeGameState;
     }
 }

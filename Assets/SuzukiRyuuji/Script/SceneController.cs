@@ -103,6 +103,10 @@ public class SceneController : MonoBehaviour
     public void LoadTitleScene()
     {
         LoadScene(_titleSceneName);
+        if (AudioManager.Instance)
+        {
+            AudioManager.Instance.PlayClipBGM(0);
+        }
     }
 
 
@@ -110,6 +114,10 @@ public class SceneController : MonoBehaviour
     public void LoadStage1Scene()
     {
         LoadScene(_stage1SceneName);
+        if (AudioManager.Instance)
+        {
+            AudioManager.Instance.PlayClipBGM(1);
+        }
     }
 
 

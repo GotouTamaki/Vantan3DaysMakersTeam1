@@ -20,7 +20,7 @@ public class Player_Scripts : MonoBehaviour
     private Camera mainCamera;
     private Vector3 initialPosition;
     private float shootTime;
-    private float waitTime = 1000.0f;
+    private float waitTime = 1f;
     private float checkDelay = 1.0f; // 速度チェックを開始するまでの遅延時間
 
     // ドラッグの最大値
@@ -62,12 +62,10 @@ public class Player_Scripts : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance._playerScripts = this;
         TurnActionManager turnActionMnager = FindAnyObjectByType<TurnActionManager>();
         turnActionMnager.SwitchPlayerTurn.AddListener(SwitchPlaerActive);
         turnActionMnager.SwitchPlayerTurn.AddListener(EndInitialize);
     }
-
     private void OnDisable()
     {
         TurnActionManager turnActionMnager = FindAnyObjectByType<TurnActionManager>();
@@ -77,6 +75,7 @@ public class Player_Scripts : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameManager.Instance._playerScripts = this;
         rb = GetComponent<Rigidbody>();
         mainCamera = Camera.main;
         transform.position = RespwanPosition;
@@ -133,9 +132,9 @@ public class Player_Scripts : MonoBehaviour
             isShooted = true;
             shootTime = waitTime; // ボールが発射された時間を記録
         }
-        shootTime -= 1.0f;
+        shootTime -= Time.deltaTime;
 
-        if (isShooted && PlayerTurn&& rb.velocity.magnitude >= 0.1f)
+        if (isShooted && PlayerTurn&& rb.velocity.magnitude >= 1f)
         {
             transform.rotation = Quaternion.LookRotation(-rb.velocity);
         }

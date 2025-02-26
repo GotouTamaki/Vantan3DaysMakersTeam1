@@ -217,6 +217,11 @@ public class GameManager : MonoBehaviour
 
 
         //currentGameState = GameState.PlayerTurn;
+        if (!_playerScripts || !_enemyManager || !_outOfBoundsChecker)
+        {
+            Debug.LogError("not exist playerScripts or enemyManager or outOfBounceChecker");
+            return;
+        }
 
         _enemyManager.CheckEnemiesIsAlive();
 
@@ -257,6 +262,7 @@ public class GameManager : MonoBehaviour
         {
             _playerTurnCount += 2;
             _playerScripts.Respwan();
+            currentGameState = GameState.EnemyTurn;
             Debug.Log("PlayerStageOut!!");
         }
 

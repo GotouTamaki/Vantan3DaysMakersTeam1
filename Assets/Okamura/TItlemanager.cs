@@ -8,13 +8,6 @@ public class TItlemanager : MonoBehaviour
     {
         _playGameButton.onClick.AddListener(GameManager.Instance.PushStartButton);
     }
-    private void Start()
-    {
-        if(AudioManager.Instance)
-        {
-            AudioManager.Instance.PlayClipBGM(0);
-        }
-    }
     private void OnDisable()
     {
         _playGameButton.onClick.RemoveListener(GameManager.Instance.PushStartButton);
