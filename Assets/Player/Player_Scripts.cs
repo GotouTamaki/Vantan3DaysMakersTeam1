@@ -72,8 +72,12 @@ public class Player_Scripts : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        blurGauge=BlurUpdate();
-        pullMagn = dragStartPosition - dragPosition;
+        if (isDragging) { 
+            blurGauge = BlurUpdate();
+            pullMagn = dragStartPosition - dragPosition;
+            Debug.Log("Blur値: " + GetBlurGauge);
+        }
+       
         //Debug.Log("Pull値：" + GetPullPower);
         // マウスの左ボタンが押されたとき
         if (Input.GetMouseButtonDown(0) && PlayerTurn && !isShooted)
@@ -190,6 +194,7 @@ public class Player_Scripts : MonoBehaviour
         PlayerTurn = true;
         isShooted = false;
         TurnEndFlag = false;
+        blurGauge = 0;
     }
 
     private float  BlurUpdate()
