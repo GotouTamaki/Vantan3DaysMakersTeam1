@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ public class TurnActionManager : MonoBehaviour
     public UnityEvent SwitchPlayerTurn;
     [Header("エネミーターンの切り替え関数")]
     public UnityEvent SwitchEnemyTurn;
+    [SerializeField] Animator _animator;
 
     void Start()
     {
@@ -33,15 +35,19 @@ public class TurnActionManager : MonoBehaviour
     /// <summary>
     /// イベントSwitchPlayerTurnを発火します
     /// </summary>
-    private void InvokeSwitchPlayerTurn()
+    private async void InvokeSwitchPlayerTurn()
     {
+        _animator.SetTrigger("PlayerTurn");
+        await UniTask.WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime == 1);
         SwitchPlayerTurn.Invoke();
     }
     /// <summary>
     /// イベントSwitchEnemyTurnを発火します
     /// </summary>
-    private void InvokeSwitchEnemyTurn()
+    private async void InvokeSwitchEnemyTurn()
     {
+        _animator.SetTrigger("EnemyTurn");
+        await UniTask.WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime == 1);
         SwitchEnemyTurn.Invoke();
     }
     private void OnDisable()
