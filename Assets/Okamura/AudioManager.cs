@@ -8,8 +8,6 @@ public struct AudioData
     public float MaxPitch;
     public float MinPitch;
 }
-
-[RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(AudioSource))]
 public class AudioManager : MonoBehaviour
 {
@@ -34,8 +32,16 @@ public class AudioManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         AudioSource[] audioSources = GetComponents<AudioSource>();
-        _audioSourceBGM = audioSources[0];
-        _audioSourceSE = audioSources[1];
+        if(audioSources.Length >= 2)
+        {
+            _audioSourceBGM = audioSources[0];
+            _audioSourceSE = audioSources[1];
+        }
+        else
+        {
+            _audioSourceBGM = audioSources[0];
+            _audioSourceSE = this.gameObject.AddComponent<AudioSource>();
+        }
     }
 
     public void PlayClipBGM(int clipIndex)
