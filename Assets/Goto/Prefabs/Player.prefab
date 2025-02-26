@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TurnEndFlag: 0
   blurGauge: 0
-  gauge_speed: 8
+  gauge_speed: 2
   gauge_level: 0
   ballForce: 10
   dragCoefficient: 0.8
