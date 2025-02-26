@@ -9,6 +9,7 @@ public class ArrowScript : MonoBehaviour
     [SerializeField] GameObject arrow;
     [SerializeField] GameObject player;
     private Player_Scripts Player_Scripts;
+    [SerializeField] float _adjustY = 0;
 
     SpriteRenderer spriteRenderer;
 
@@ -49,6 +50,8 @@ public class ArrowScript : MonoBehaviour
 
             pull_power = Player_Scripts.GetPullPower;
             this.transform.localScale = arrow_scale * drag_magnitude * pull_power;
+
+            this.transform.position = new Vector3(this.transform.position.x, _adjustY, this.transform.position.z);
         }
         else
         {

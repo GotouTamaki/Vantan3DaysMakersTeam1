@@ -650,7 +650,7 @@ PrefabInstance:
     - target: {fileID: 1860352989858278522, guid: 20f1f09825399d34a910e2c95b00bf1d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 1860352989858278522, guid: 20f1f09825399d34a910e2c95b00bf1d,
         type: 3}
@@ -697,6 +697,11 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 2128220407}
+    - target: {fileID: 2352067041091478929, guid: 20f1f09825399d34a910e2c95b00bf1d,
+        type: 3}
+      propertyPath: _adjustY
+      value: 0.001
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1279,6 +1284,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 13400000, guid: 8439defd0ecc68a4dbb5f969f199ef86,
         type: 2}
+    - target: {fileID: 8394657904751058507, guid: bd9ac7760cffee54288b4d68af41bb19,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8991917815355549782, guid: bd9ac7760cffee54288b4d68af41bb19,
         type: 3}
       propertyPath: m_Material

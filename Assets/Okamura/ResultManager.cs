@@ -12,7 +12,9 @@ public class ResultManager : MonoBehaviour
     [SerializeField] Sprite _disabledImage;
     [SerializeField] Image[] _reviewImages;
     [SerializeField] TMP_Text _penguinComment;
-    [SerializeField] string[] _penguinComments;
+    [SerializeField] string[] _penguinCommentsScore1;
+    [SerializeField] string[] _penguinCommentsScore2;
+    [SerializeField] string[] _penguinCommentsScore3;
     [SerializeField] float _scoreIndex = 10;
 
     [SerializeField] Button _returnTitleButton;
@@ -22,6 +24,7 @@ public class ResultManager : MonoBehaviour
     }
     private async void Start()
     {
+        Random.InitState((int)Time.realtimeSinceStartup);
         _returnTitleButton.onClick.AddListener(GameManager.Instance.ChangeStateTitle);
         await UniTask.WaitForSeconds(_waitTimeDuration);
         //ここのマジックナンバーは後にGameManagerから数字を取得する形にする
@@ -33,7 +36,11 @@ public class ResultManager : MonoBehaviour
         //星の表示数をgameManagerから持ってくる
         //１～３
         int scorerdNumber = 0;
-        scorerdNumber = (int)(_gameManager.PlayerTurnCount / _scoreIndex);
+        scorerdNumber = 3 - (int)(_gameManager.PlayerTurnCount / _scoreIndex);
+        if(scorerdNumber > 1)
+        {
+            scorerdNumber = 1;
+        }
         for (int i = 0; i < 3; i++)
         {
             if(i < scorerdNumber)
@@ -49,7 +56,18 @@ public class ResultManager : MonoBehaviour
         
         await UniTask.WaitForSeconds(_waitTimeDuration);
         //penguin comment
-        _penguinComment.text = _penguinComments[scorerdNumber];
+        switch(scorerdNumber)
+        {
+            case 1:
+                _penguinComment.text = _penguinCommentsScore1[Random.Range(0, _penguinCommentsScore1.Length)];
+                break;
+            case 2:
+                _penguinComment.text = _penguinCommentsScore2[Random.Range(0, _penguinCommentsScore2.Length)];
+                break;
+            case 3:
+                _penguinComment.text = _penguinCommentsScore3[Random.Range(0, _penguinCommentsScore3.Length)];
+                break;
+        }
     }
     private void OnDisable()
     {

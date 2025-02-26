@@ -133,7 +133,7 @@ public class Player_Scripts : MonoBehaviour
         }
         shootTime -= Time.deltaTime;
 
-        if (isShooted && PlayerTurn&& rb.velocity.magnitude >= 1f)
+        if (isShooted && PlayerTurn&& rb.velocity.magnitude >= 0.3f)
         {
             transform.rotation = Quaternion.LookRotation(-rb.velocity);
         }
