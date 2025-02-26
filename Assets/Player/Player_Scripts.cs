@@ -58,6 +58,12 @@ public class Player_Scripts : MonoBehaviour
     private Vector3 RespwanPosition = new Vector3(15.47f, 0, -1.94f); // ボールのリスポーン位置
     private bool isRespwan = false;
 
+    AudioSource _chargeAudioSource;
+
+    [SerializeField] AudioClip _succeseSE;
+    [SerializeField] AudioClip _failureSE;
+
+    [SerializeField, Range(0, 1)] float _succesePercent = 0.9f;
 
     private void OnEnable()
     {
@@ -79,6 +85,7 @@ public class Player_Scripts : MonoBehaviour
         mainCamera = Camera.main;
         transform.position = RespwanPosition;
 
+        _chargeAudioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -89,8 +96,14 @@ public class Player_Scripts : MonoBehaviour
         // マウスの左ボタンが押されたとき
         if (Input.GetMouseButtonDown(0) && PlayerTurn && !isShooted)
         {
+            blurGauge = 0;
+            gauge_level = 0;
+
             dragStartPosition = GetWorldPositionOnPlane(Input.mousePosition, 0);
             isDragging = true;
+
+            //チャージ音開始
+            _chargeAudioSource.Play();
         }
 
         if (isDragging)
@@ -106,6 +119,19 @@ public class Player_Scripts : MonoBehaviour
         // マウスの左ボタンが離されたとき
         if (Input.GetMouseButtonUp(0) && isDragging)
         {
+            //チャージ音停止
+            _chargeAudioSource.Stop();
+
+            if(blurGauge > _succesePercent)
+            {
+                _chargeAudioSource.PlayOneShot(_succeseSE);
+            }
+            else
+            {
+                _chargeAudioSource.PlayOneShot(_failureSE);
+            }
+
+            
             //ここでUIからblurGaugeの値を取得する
             //Get(blurGauge);
 

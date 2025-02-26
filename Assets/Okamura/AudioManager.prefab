@@ -238,14 +238,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dca625fe744a1c4d8b6b913cf6bbfad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalVolumeBGM: 1
-  GlobalVolumeSE: 1
+  GlobalVolumeBGM: 0.5
+  GlobalVolumeSE: 0.5
   _audioDataBGM:
   - AudioClip: {fileID: 8300000, guid: eb73ecdd07da9bf489468c2bbf7887b0, type: 3}
     VolumeIndex: 0.1
     MaxPitch: 0
     MinPitch: 0
-  - AudioClip: {fileID: 8300000, guid: e131cbd8255ee674db972d1cfae3cc01, type: 3}
+  - AudioClip: {fileID: 8300000, guid: 966c435dab285e743b40a3994178b432, type: 3}
     VolumeIndex: 0.5
     MaxPitch: 0
     MinPitch: 0

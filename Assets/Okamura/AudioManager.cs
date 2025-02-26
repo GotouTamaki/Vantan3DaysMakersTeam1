@@ -67,9 +67,8 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            _audioSourceSE.clip = _audioDataBGM[clipIndex].AudioClip;
             _audioSourceSE.volume = _audioDataBGM[clipIndex].VolumeIndex * GlobalVolumeSE;
-            _audioSourceSE.PlayOneShot();
+            _audioSourceSE.PlayOneShot(_audioDataBGM[clipIndex].AudioClip);
         }
     }
 
