@@ -15,23 +15,23 @@ public class SceneController : MonoBehaviour
 {
 
 
-   // シーンに関してinspector上で設定を行うための変数に変更を行いたい(方法を考案中)
-   //→Scene事態を格納する事ができるらしい  とりあえずはファイル名を格納する形で実装を行う
+    // シーンに関してinspector上で設定を行うための変数に変更を行いたい(方法を考案中)
+    //→Scene事態を格納する事ができるらしい  とりあえずはファイル名を格納する形で実装を行う
     [Header("シーンの設定")]
-    [SerializeField,Header("タイトルシーンファイル名")]
-    private string _titleSceneName ;
+    [SerializeField, Header("タイトルシーンファイル名")]
+    private string _titleSceneName;
 
-    [SerializeField,Header("ステージ1シーンファイル名")]
-    private string _stage1SceneName ;
+    [SerializeField, Header("ステージ1シーンファイル名")]
+    private string _stage1SceneName;
 
-    [SerializeField,Header("ステージ2シーンファイル名")]
-    private string _stage2SceneName ;
+    [SerializeField, Header("ステージ2シーンファイル名")]
+    private string _stage2SceneName;
 
-    [SerializeField,Header("リザルトシーンファイル名")]
-    private string _resultSceneName ;
+    [SerializeField, Header("リザルトシーンファイル名")]
+    private string _resultSceneName;
 
-    [SerializeField,Header("Optionシーンファイル名")]
-    private string _optionSceneName ;
+    [SerializeField, Header("Optionシーンファイル名")]
+    private string _optionSceneName;
 
 
     //SceneControllerのインスタンスを格納する変数
@@ -40,7 +40,7 @@ public class SceneController : MonoBehaviour
     //SceneControllerのインスタンスが存在するかどうかを返すプロパティ
     private void Awake()
     {
-        if(Instance == null)//インスタンスが存在しない場合
+        if (Instance == null)//インスタンスが存在しない場合
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
@@ -67,7 +67,7 @@ public class SceneController : MonoBehaviour
         {
             //存在しない場合には、対象のシーンが存在しない旨をデバッグログで表示
             Debug.LogWarning($"シーン名{sceneName}は存在しません");
-           
+
         }
     }
 
@@ -79,7 +79,7 @@ public class SceneController : MonoBehaviour
     private bool IsSceneExist(string sceneName)
     {
 
-        for(int i = 0; i < SceneManager.sceneCountInBuildSettings; ++i)
+        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; ++i)
         {
             //ビルド設定されているシーンのパスを取得
             string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
@@ -88,15 +88,15 @@ public class SceneController : MonoBehaviour
             string sceneNameInBuild = System.IO.Path.GetFileNameWithoutExtension(scenePath);
 
             //引数のシーン名とビルド設定されたシーン名が一致しているかを判定
-            if(sceneNameInBuild == sceneName)
+            if (sceneNameInBuild == sceneName)
             {
                 return true;
             }
-          
+
         }
         return false;
     }
-   
+
 
 
     //タイトルシーンへの遷移
@@ -108,8 +108,8 @@ public class SceneController : MonoBehaviour
 
     //ステージ1シーンへの遷移
     public void LoadStage1Scene()
-    { 
-     LoadScene(_stage1SceneName);
+    {
+        LoadScene(_stage1SceneName);
     }
 
 
@@ -135,26 +135,27 @@ public class SceneController : MonoBehaviour
     //デバッグ用シーン遷移メソッド
     public void LoadNextScene()
     {
-       //現在のシーン名を取得
-       string currentSceneName = SceneManager.GetActiveScene().name;
+        //現在のシーン名を取得
+        string currentSceneName = SceneManager.GetActiveScene().name;
 
-        if(currentSceneName == _titleSceneName)
+        if (currentSceneName == _titleSceneName)
         {
             LoadStage1Scene();
         }
-        else if(currentSceneName == _stage1SceneName)
+        else if (currentSceneName == _stage1SceneName)
         {
             LoadStage2Scene();
         }
-        else if(currentSceneName == _stage2SceneName)
+        else if (currentSceneName == _stage2SceneName)
         {
             LoadResultScene();
         }
-        else if(currentSceneName == _resultSceneName)
+        else if (currentSceneName == _resultSceneName)
         {
             LoadTitleScene();
         }
     }
+
 
 
 
