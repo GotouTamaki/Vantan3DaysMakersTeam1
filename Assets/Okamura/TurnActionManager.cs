@@ -38,7 +38,6 @@ public class TurnActionManager : MonoBehaviour
     private async void InvokeSwitchPlayerTurn()
     {
         _animator.SetTrigger("PlayerTurn");
-        await UniTask.WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime == 1);
         SwitchPlayerTurn.Invoke();
     }
     /// <summary>
@@ -47,7 +46,6 @@ public class TurnActionManager : MonoBehaviour
     private async void InvokeSwitchEnemyTurn()
     {
         _animator.SetTrigger("EnemyTurn");
-        await UniTask.WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime == 1);
         SwitchEnemyTurn.Invoke();
     }
     private void OnDisable()
