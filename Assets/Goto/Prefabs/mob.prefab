@@ -101,7 +101,7 @@ MonoBehaviour:
   _deadEffect: {fileID: 7465278780550289502, guid: d0d17628f30c3e64ab318062056e0ad5,
     type: 3}
   _attackTurnCount: 1
-  _shotPower: 5
+  _shotPower: 15
 --- !u!1001 &4155968789584261222
 PrefabInstance:
   m_ObjectHideFlags: 0

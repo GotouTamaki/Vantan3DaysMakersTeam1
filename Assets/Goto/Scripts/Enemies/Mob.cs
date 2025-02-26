@@ -24,6 +24,7 @@ public class Mob : EnemyBase
             {
                 Vector3 shotVector = (_player.GetPlayerPosition - this.transform.position).normalized;
                 _rigidbody.AddForce(shotVector * _shotPower, ForceMode.Impulse);
+                transform.rotation = Quaternion.LookRotation(shotVector);
 
                 await UniTask.WaitUntil(() => GameManager.Instance.currentGameState == GameState.PlayerTurn);
                 _currentAttackTurnCount = _attackTurnCount;

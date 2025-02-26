@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using static Unity.VisualScripting.Member;
+using Random = UnityEngine.Random;
 
 public class Player_Scripts : MonoBehaviour
 {
@@ -202,6 +205,14 @@ public class Player_Scripts : MonoBehaviour
 
         }
 
+    }
+
+    private void LateUpdate()
+    {
+        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+        Vector3 velo = rb.velocity;
+        velo.y = math.min(velo.y, 0);
+        rb.velocity = velo;
     }
 
 

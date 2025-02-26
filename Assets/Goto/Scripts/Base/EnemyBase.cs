@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using Unity.Mathematics;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -39,6 +40,14 @@ public abstract class EnemyBase : MonoBehaviour
         //_audioManager = FindAnyObjectByType<AudioManager>();
         _rigidbody = GetComponent<Rigidbody>();
         _currentAttackTurnCount = _attackTurnCount;
+    }
+    
+    private void LateUpdate()
+    {
+        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+        Vector3 velo = _rigidbody.velocity;
+        velo.y = math.min(velo.y, 0);
+        _rigidbody.velocity = velo;
     }
 
     public abstract UniTaskVoid Execute();
