@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TItlemanager : MonoBehaviour
+public class TitleManager : MonoBehaviour
 {
     [SerializeField] Button _playGameButton;
-    private void OnEnable()
+    private void Start()
     {
         _playGameButton.onClick.AddListener(GameManager.Instance.PushStartButton);
     }
