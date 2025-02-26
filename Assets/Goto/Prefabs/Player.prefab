@@ -51,7 +51,7 @@ MonoBehaviour:
   blurGauge: 0
   gauge_speed: 8
   gauge_level: 0
-  ballForce: 15
+  ballForce: 10
   dragCoefficient: 0.8
   RespwanPosition: {x: 0, y: 0, z: 0}
 --- !u!54 &4095676120627800211
@@ -62,7 +62,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8962561661283252632}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
