@@ -14,7 +14,7 @@ public class EnemyManager : MonoBehaviour
 
     public bool IsAnnihilation => !_enemies.Any(enemy => enemy.GetIsAlive);
 
-    public bool IsBossAlive => !_enemies.FirstOrDefault(enemy => enemy as Boss).GetIsAlive;
+    public bool IsBossAlive => _enemies.FirstOrDefault(enemy => enemy as Boss).GetIsAlive;
 
     public bool IsTurnChangeVelocity => _enemies.Max(enemy => enemy.GetVelocity.sqrMagnitude) <= _turnChangeVelocityThreshold * _turnChangeVelocityThreshold;
 
