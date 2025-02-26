@@ -18,6 +18,8 @@ public class EnemyManager : MonoBehaviour
 
     public bool IsTurnChangeVelocity => _enemies.Max(enemy => enemy.GetVelocity.sqrMagnitude) <= _turnChangeVelocityThreshold * _turnChangeVelocityThreshold;
 
+    public bool IsAllEnemiesActed => _enemies.All(enemy => enemy.GetIsActed);
+
     private void Start()
     {
         _enemies = FindObjectsByType<EnemyBase>(FindObjectsSortMode.None);
