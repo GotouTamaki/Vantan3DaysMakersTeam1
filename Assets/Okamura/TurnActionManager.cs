@@ -7,16 +7,20 @@ using UnityEngine.Events;
 
 public class TurnActionManager : MonoBehaviour
 {
-    [Header("ƒvƒŒƒCƒ„[ƒ^[ƒ“‚ÌØ‚è‘Ö‚¦ŠÖ”")]
+    [Header("ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½^ï¿½[ï¿½ï¿½ï¿½ÌØ‚ï¿½Ö‚ï¿½ï¿½Öï¿½")]
     public UnityEvent SwitchPlayerTurn;
-    [Header("ƒGƒlƒ~[ƒ^[ƒ“‚ÌØ‚è‘Ö‚¦ŠÖ”")]
+    [Header("ï¿½Gï¿½lï¿½~ï¿½[ï¿½^ï¿½[ï¿½ï¿½ï¿½ÌØ‚ï¿½Ö‚ï¿½ï¿½Öï¿½")]
     public UnityEvent SwitchEnemyTurn;
     [SerializeField] Animator _animator;
+    
+    bool _inAnimation;
+    
+    public void SetInAnimation(bool value){ _inAnimation = value; }
 
     void Start()
     {
         GameManager.Instance.OnGameStateChanged += ChangeGameState;
-        //PlayerManager,EnemyManager“™‚©‚çƒ^[ƒ“Ø‚è‘Ö‚¦‚ÉØ‚è‘Ö‚¦‚éˆ—‚ğ“o˜^‚µ‚Ä‚à‚ç‚¤
+        //PlayerManager,EnemyManagerï¿½ï¿½ï¿½ï¿½ï¿½ï¿½^ï¿½[ï¿½ï¿½ï¿½Ø‚ï¿½Ö‚ï¿½ï¿½ï¿½ï¿½ÉØ‚ï¿½Ö‚ï¿½ï¿½éˆï¿½ï¿½ï¿½ï¿½oï¿½^ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ç‚¤
     }
 
     private void ChangeGameState(GameState gameState)
@@ -33,19 +37,23 @@ public class TurnActionManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒCƒxƒ“ƒgSwitchPlayerTurn‚ğ”­‰Î‚µ‚Ü‚·
+    /// ï¿½Cï¿½xï¿½ï¿½ï¿½gSwitchPlayerTurnï¿½ğ”­‰Î‚ï¿½ï¿½Ü‚ï¿½
     /// </summary>
     private async void InvokeSwitchPlayerTurn()
     {
         _animator.SetTrigger("PlayerTurn");
+        await UniTask.WaitUntil(() => !_inAnimation);
+        GameManager.Instance.currentGameState = GameState.PlayerTurn;
         SwitchPlayerTurn.Invoke();
     }
     /// <summary>
-    /// ƒCƒxƒ“ƒgSwitchEnemyTurn‚ğ”­‰Î‚µ‚Ü‚·
+    /// ï¿½Cï¿½xï¿½ï¿½ï¿½gSwitchEnemyTurnï¿½ğ”­‰Î‚ï¿½ï¿½Ü‚ï¿½
     /// </summary>
     private async void InvokeSwitchEnemyTurn()
     {
         _animator.SetTrigger("EnemyTurn");
+        await UniTask.WaitUntil(() => !_inAnimation);
+        GameManager.Instance.currentGameState = GameState.EnemyTurn;
         SwitchEnemyTurn.Invoke();
     }
     private void OnDisable()
