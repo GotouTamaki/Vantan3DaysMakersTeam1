@@ -45,11 +45,12 @@ public abstract class EnemyBase : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             foreach (ContactPoint point in collision.contacts)
             {
                 Instantiate(_hitEffect, point.point, _hitEffect.transform.rotation);
+                //_audioManager.PlayClipSE(2);
             }
         }
     }
