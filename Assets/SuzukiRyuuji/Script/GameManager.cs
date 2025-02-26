@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
 
     //GameManagerのインスタンスを格納する変数
     public static GameManager Instance { get; private set; }
-    public GameState currentGameState { get; private set; } = GameState.Title;
+    public GameState currentGameState { get; private set; } = GameState.PlayerTurn;
 
     // public SceneState currentSceneState { get; private set; } = SceneState.Title;
 
@@ -55,9 +55,13 @@ public class GameManager : MonoBehaviour
 
 
     //プレイヤーのターン数を格納する変数
-    private int _playerTurnCount = 0;
+    private int _playerTurnCount = 1;
 
 
+
+
+    EnemyManager _enemyManager;
+    OutOfBoundsChecker _outOfBoundsChecker;
 
 
     public SceneState CurrentSceneState
@@ -97,16 +101,22 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        _enemyManager = FindAnyObjectByType<EnemyManager>();
+        _outOfBoundsChecker = FindAnyObjectByType<OutOfBoundsChecker>();
 
 
 
-        //_playerScripts = FindAnyObjectByType<Player_Scripts>();
+        //デバッグに不必要なためにコメントアウト
+        _playerScripts = FindAnyObjectByType<Player_Scripts>();
         ////kari
-        //currentGameState = GameState.PlayerTurn;
+        currentGameState = GameState.PlayerTurn;
+        _currentSceneState  = SceneState.Stage1;
     }
 
     void Update()
     {
+
+        //Debug.Log("CurrentSceneState:" + _currentSceneState);
 
 
         //デバッグ用
@@ -114,7 +124,7 @@ public class GameManager : MonoBehaviour
         {
             HandleTitleScene();
         }
-        else if (_currentSceneState == SceneState.Stage1 || _currentSceneState == SceneState.Stage2)
+        else if (_currentSceneState == SceneState.Stage1)
         {
             HandleInGame();
         }
@@ -156,6 +166,11 @@ public class GameManager : MonoBehaviour
 
             case SceneState.Stage1:
                 SceneController.Instance.LoadStage1Scene();
+
+                _outOfBoundsChecker  = FindAnyObjectByType<OutOfBoundsChecker>();
+                _playerScripts = FindAnyObjectByType<Player_Scripts>();
+                _enemyManager = FindAnyObjectByType<EnemyManager>();
+
                 break;
 
             case SceneState.Stage2:
@@ -187,7 +202,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            _playerTurnCount = 0;
+            _playerTurnCount = 1;
             CurrentSceneState = SceneState.Stage1;
             Debug.Log("Chanege Scene to Stage1");
         }
@@ -203,64 +218,98 @@ public class GameManager : MonoBehaviour
 
     private void HandleInGame()
     {
-        currentGameState = GameState.PlayerTurn;
-        //Debug.Log("InGame Start");
 
-        //デバッグ用
-        if (currentGameState == GameState.PlayerTurn && Input.GetKeyDown(KeyCode.Return))
-        {
-            Debug.Log("PlayerTurn End to EnemyTurn");
 
-            currentGameState = GameState.EnemyTurn;
-            _playerTurnCount++;
-            Debug.Log("PlayerTurnCount:" + _playerTurnCount);
+        //currentGameState = GameState.PlayerTurn;
 
-        }
+        _enemyManager.CheckEnemiesIsAlive();
 
-        if (currentGameState == GameState.EnemyTurn && Input.GetKeyDown(KeyCode.Return))
-        {
-            Debug.Log("EnemyTurn End to PlayerTurn");
-            currentGameState = GameState.PlayerTurn;
-        }
+        Debug.Log("PlayerTurnCount:" + _playerTurnCount);
 
-        //仮のStageOut処理
-        if (Input.GetKeyDown(KeyCode.B))
+     
+
+
+
+        ////デバッグ用にEnterキーでターンを進める
+        //if (currentGameState == GameState.PlayerTurn && Input.GetKeyDown(KeyCode.Return))
+        //{
+        //    Debug.Log("PlayerTurn End to EnemyTurn");
+
+        //    currentGameState = GameState.EnemyTurn;
+        //    _playerTurnCount++;
+        //    Debug.Log("PlayerTurnCount:" + _playerTurnCount);
+
+        //}
+
+        //if (currentGameState == GameState.EnemyTurn && Input.GetKeyDown(KeyCode.Return))
+        //{
+        //    Debug.Log("EnemyTurn End to PlayerTurn");
+        //    currentGameState = GameState.PlayerTurn;
+        //}
+
+        ////仮のStageOut処理
+        //if (Input.GetKeyDown(KeyCode.B))
+        //{
+        //    _playerTurnCount += 2;
+        //    Debug.Log("PlayerStageOut!!");
+        //    Debug.Log("PlayerTurnCount:" + _playerTurnCount);
+        //}
+
+
+        //プレイヤーがステージ外に出た時の処理
+        if (!_outOfBoundsChecker.CheckOutOfBounds(_playerScripts.GetPlayerPosition))
         {
             _playerTurnCount += 2;
+            _playerScripts.Respwan();
             Debug.Log("PlayerStageOut!!");
-            Debug.Log("PlayerTurnCount:" + _playerTurnCount);
         }
 
-        //if (currentGameState == GameState.PlayerTurn && _playerScripts.CheckPlayerEnd())
-        //{
-        //    //プレイヤーの行動が終了した時にターン数を1追加する
-        //    _playerTurnCount++;
-
-        //    Debug.Log("StateChange EnemyTurn");
-        //    currentGameState = GameState.EnemyTurn;
-        //    OnGameStateChanged(GameState.EnemyTurn);
-        //}
+       
+        if (currentGameState == GameState.PlayerTurn && _playerScripts.CheckPlayerEnd())
+        {
+            //プレイヤーの行動が終了した時にターン数を1追加する
+            _playerTurnCount++;
+            Debug.Log("StateChange EnemyTurn");
+            currentGameState = GameState.EnemyTurn;
+            OnGameStateChanged(GameState.EnemyTurn);
+        }
         //後半のTrueはエネミーの行動完了を待つ
 
-        //if (currentGameState == GameState.EnemyTurn && true)
-        //{
-        //    Debug.Log("StateChange PlayerTurn");
-        //    currentGameState = GameState.PlayerTurn;
-        //    OnGameStateChanged(GameState.PlayerTurn);
-        //}
-
-        //Stage2　or Resultに遷移する
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (currentGameState == GameState.EnemyTurn && _enemyManager.IsTurnChangeVelocity)
         {
-            if (CurrentSceneState == SceneState.Stage1)
-            {
-                CurrentSceneState = SceneState.Stage2;
-            }
-            else if (CurrentSceneState == SceneState.Stage2)
+            
+            Debug.Log("StateChange PlayerTurn");
+            currentGameState = GameState.PlayerTurn;
+            OnGameStateChanged(GameState.PlayerTurn);
+        }
+
+
+
+   //ゲームクリア判定処理（ボスが死亡したらゲームクリアにする）
+        if (!_enemyManager.IsBossAlive)
+        {
+           
+            Debug.Log("GameClear!!");
+            Debug.Log("PlayerTurnCount:" + _playerTurnCount);
+            currentGameState = GameState.GameClear;
+            //リザルトシーンへの遷移処理
+            if (currentGameState == GameState.GameClear)
             {
                 CurrentSceneState = SceneState.Result;
             }
+
         }
+
+
+        ////Stage2　or Resultに遷移する
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+
+        //    if (CurrentSceneState == SceneState.Stage1 && currentGameState == GameState.GameClear)//Stage１をクリアしたらStage2に遷移する
+        //    { 
+        //        
+        //    }
+        //}
 
     }
 
@@ -279,12 +328,19 @@ public class GameManager : MonoBehaviour
 
 
         if (Input.GetKeyDown(KeyCode.Space))
-        {
+        { 
+            currentGameState = GameState.Title;
             Debug.Log("Change Scene to Title");
             CurrentSceneState = SceneState.Title;
         }
 
 
+    }
+
+    //スタートボタンを押した時にシーンをStage1に変更する
+    public void PushStartButton()
+    {
+        CurrentSceneState = SceneState.Stage1;
     }
 
 }

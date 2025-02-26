@@ -936,7 +936,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 829011365}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: toStage1Scene
+        m_MethodName: Stage1SceneState
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
