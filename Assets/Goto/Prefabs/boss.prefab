@@ -96,7 +96,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64f20cc059da30640945463497b7e12a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _deadEffect: {fileID: 0}
+  _deadEffect: {fileID: 7465278780550289502, guid: d0d17628f30c3e64ab318062056e0ad5,
+    type: 3}
   _attackTurnCount: 3
   _shotPower: 1
 --- !u!1001 &3542163002270943533
