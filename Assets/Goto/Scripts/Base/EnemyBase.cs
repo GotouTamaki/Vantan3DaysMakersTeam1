@@ -50,7 +50,7 @@ public abstract class EnemyBase : MonoBehaviour
             foreach (ContactPoint point in collision.contacts)
             {
                 Instantiate(_hitEffect, point.point, _hitEffect.transform.rotation);
-                //_audioManager.PlayClipSE(2);
+                _audioManager.PlayClipSE(1);
             }
         }
     }
