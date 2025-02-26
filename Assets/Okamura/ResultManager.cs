@@ -8,14 +8,11 @@ public class ResultManager : MonoBehaviour
     GameManager _gameManager;
     [SerializeField] float _waitTimeDuration = 1f;
     [SerializeField] TMP_Text _turnCntText;
-    [SerializeField] string _strFrontTurnCnt = "合計ターン数…";
-    [SerializeField] string _strBackTurnCnt = "回";
     [SerializeField] Sprite _enabledImage;
     [SerializeField] Sprite _disabledImage;
     [SerializeField] Image[] _reviewImages;
     [SerializeField] TMP_Text _penguinComment;
     [SerializeField] string[] _penguinComments;
-    [SerializeField] GameObject _homeButton;
     [SerializeField] float _scoreIndex = 10;
 
     [SerializeField] Button _returnTitleButton;
@@ -25,10 +22,10 @@ public class ResultManager : MonoBehaviour
     }
     private async void Start()
     {
-
+        _returnTitleButton.onClick.AddListener(GameManager.Instance.ChangeStateTitle);
         await UniTask.WaitForSeconds(_waitTimeDuration);
         //ここのマジックナンバーは後にGameManagerから数字を取得する形にする
-        _turnCntText.text = _strFrontTurnCnt + _gameManager.PlayerTurnCount + _strBackTurnCnt;
+        _turnCntText.text = $"{_gameManager.PlayerTurnCount}";
 
         await UniTask.WaitForSeconds(_waitTimeDuration);
 
@@ -53,8 +50,9 @@ public class ResultManager : MonoBehaviour
         await UniTask.WaitForSeconds(_waitTimeDuration);
         //penguin comment
         _penguinComment.text = _penguinComments[scorerdNumber];
-
-        await UniTask.WaitForSeconds(_waitTimeDuration);
-        _homeButton.SetActive(true);
+    }
+    private void OnDisable()
+    {
+        _returnTitleButton.onClick.RemoveListener(GameManager.Instance.ChangeStateTitle);
     }
 }

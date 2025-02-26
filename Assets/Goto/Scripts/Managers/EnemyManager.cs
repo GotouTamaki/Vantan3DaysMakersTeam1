@@ -22,6 +22,8 @@ public class EnemyManager : MonoBehaviour
 
     private void Start()
     {
+        GameManager.Instance._enemyManager = this;
+
         _enemies = FindObjectsByType<EnemyBase>(FindObjectsSortMode.None);
         _outOfBoundsChecker = FindAnyObjectByType<OutOfBoundsChecker>();
         _turnActionManager = FindAnyObjectByType<TurnActionManager>();

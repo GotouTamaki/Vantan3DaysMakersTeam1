@@ -62,6 +62,7 @@ public class Player_Scripts : MonoBehaviour
 
     private void OnEnable()
     {
+        GameManager.Instance._playerScripts = this;
         TurnActionManager turnActionMnager = FindAnyObjectByType<TurnActionManager>();
         turnActionMnager.SwitchPlayerTurn.AddListener(SwitchPlaerActive);
         turnActionMnager.SwitchPlayerTurn.AddListener(EndInitialize);

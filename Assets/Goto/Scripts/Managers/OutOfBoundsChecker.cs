@@ -5,6 +5,10 @@ public class OutOfBoundsChecker : MonoBehaviour
     [SerializeField] private Vector3 _center;
     [SerializeField] private Vector3 _size = new Vector3(1f, 1f, 1f);
 
+    private void Start()
+    {
+        GameManager.Instance._outOfBoundsChecker = this;
+    }
     public bool CheckOutOfBounds(Vector3 objectPosition)
     {
         if (_center.x + _size.x * 0.5f < objectPosition.x) return false;

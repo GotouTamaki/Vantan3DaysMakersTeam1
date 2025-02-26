@@ -14,7 +14,6 @@ using System;
 public enum GameState
 {
     Title,
-    InGame,
     PlayerTurn,//プレイヤーのターン
     EnemyTurn,//エネミーのターン
     GameClear,
@@ -61,8 +60,8 @@ public class GameManager : MonoBehaviour
 
 
 
-    EnemyManager _enemyManager;
-    OutOfBoundsChecker _outOfBoundsChecker;
+    public EnemyManager _enemyManager;
+    public OutOfBoundsChecker _outOfBoundsChecker;
 
 
     public SceneState CurrentSceneState
@@ -81,8 +80,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    //kattenituika
-    Player_Scripts _playerScripts;
+    public Player_Scripts _playerScripts;
 
     //GameManagerのインスタンスが存在するかどうかを返すプロパティ
     private void Awake()
@@ -110,17 +108,12 @@ public class GameManager : MonoBehaviour
         //デバッグに不必要なためにコメントアウト
         _playerScripts = FindAnyObjectByType<Player_Scripts>();
         ////kari
-        currentGameState = GameState.PlayerTurn;
-        _currentSceneState  = SceneState.Stage1;
+        currentGameState = GameState.Title;
+        _currentSceneState  = SceneState.Title;
     }
 
     void Update()
     {
-
-        //Debug.Log("CurrentSceneState:" + _currentSceneState);
-
-
-        //デバッグ用
         if (_currentSceneState == SceneState.Title)
         {
             HandleTitleScene();
@@ -168,9 +161,11 @@ public class GameManager : MonoBehaviour
             case SceneState.Stage1:
                 SceneController.Instance.LoadStage1Scene();
 
-                _outOfBoundsChecker  = FindAnyObjectByType<OutOfBoundsChecker>();
-                _playerScripts = FindAnyObjectByType<Player_Scripts>();
-                _enemyManager = FindAnyObjectByType<EnemyManager>();
+                currentGameState = GameState.PlayerTurn;
+
+                //outOfBoundsChecker  = FindAnyObjectByType<OutOfBoundsChecker>();
+                //_playerScripts = FindAnyObjectByType<Player_Scripts>();
+                //_enemyManager = FindAnyObjectByType<EnemyManager>();
 
                 break;
 
@@ -343,5 +338,10 @@ public class GameManager : MonoBehaviour
     {
         CurrentSceneState = SceneState.Stage1;
     }
-
+    public void ChangeStateTitle()
+    {
+        currentGameState = GameState.Title;
+        Debug.Log("Change Scene to Title");
+        CurrentSceneState = SceneState.Title;
+    }
 }
