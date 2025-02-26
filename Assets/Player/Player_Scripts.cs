@@ -139,7 +139,7 @@ public class Player_Scripts : MonoBehaviour
 
 
 
-        if (isShooted && shootTime < checkDelay && rb.velocity.magnitude < 0.1f && PlayerTurn&& !isRespwan)
+        if (isShooted && shootTime < checkDelay && rb.velocity.magnitude < 0.1f && PlayerTurn)
         {
             Debug.Log("ターン終了！！");
             rb.velocity = Vector3.zero;
@@ -207,7 +207,7 @@ public class Player_Scripts : MonoBehaviour
         PlayerTurn = true;
         isShooted = false;
         TurnEndFlag = false;
-        isRespwan = false;
+        //isRespwan = false;
         blurGauge = 0;
     }
     // Blurゲージの更新
@@ -232,7 +232,7 @@ public class Player_Scripts : MonoBehaviour
     // ボールのリスポーン
     public  void Respwan()
     {
-        isRespwan = true;
+        //isRespwan = true;
         transform.position = RespwanPosition;
         transform.rotation = new Quaternion(0,90,0,0);
         rb.velocity = Vector3.zero;
