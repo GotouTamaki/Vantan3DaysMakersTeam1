@@ -24,7 +24,7 @@ public class Mob : EnemyBase
                 Vector3 shotVector = (_player.GetPlayerPosition - this.transform.position).normalized;
                 _rigidbody.AddForce(shotVector * _shotPower, ForceMode.Impulse);
 
-                await UniTask.WaitUntil(() => GetVelocity.sqrMagnitude <= 0.1f * 0.1f);
+                await UniTask.WaitUntil(() => GameManager.Instance.currentGameState == GameState.PlayerTurn);
                 _currentAttackTurnCount = _attackTurnCount;
             }
         }
