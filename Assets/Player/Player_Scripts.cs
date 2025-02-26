@@ -14,7 +14,6 @@ public class Player_Scripts : MonoBehaviour
     private Vector3 dragPosition;
     // ドラッグ中かどうか
     private bool isDragging = false;
-
     private bool PlayerTurn = true;
     private bool isShooted = false;
     private Rigidbody rb;
@@ -45,12 +44,18 @@ public class Player_Scripts : MonoBehaviour
     public static readonly float GaugeMax = 1.0f;
     public static readonly float GaugeMin = 0.0f;
 
-
+    //
     [SerializeField]
     private int ballForce = 5; // ボールに加える力倍率
 
     [SerializeField]
     private float dragCoefficient = 0.8f; // 速度減衰係数
+
+    // ボールのリスポーン位置
+    [SerializeField]
+    private Vector3 RespwanPosition = new Vector3(15.47f, 0, -1.94f); // ボールのリスポーン位置
+    private bool isRespwan = false;
+
 
     private void OnEnable()
     {
@@ -66,18 +71,14 @@ public class Player_Scripts : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         mainCamera = Camera.main;
+        transform.position = RespwanPosition;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isDragging) { 
-            blurGauge = BlurUpdate();
-            pullMagn = dragStartPosition - dragPosition;
-            Debug.Log("Blur値: " + GetBlurGauge);
-        }
-       
+
         //Debug.Log("Pull値：" + GetPullPower);
         // マウスの左ボタンが押されたとき
         if (Input.GetMouseButtonDown(0) && PlayerTurn && !isShooted)
@@ -85,12 +86,17 @@ public class Player_Scripts : MonoBehaviour
             dragStartPosition = GetWorldPositionOnPlane(Input.mousePosition, 0);
             isDragging = true;
         }
+
         if (isDragging)
         {
-
             dragPosition = GetWorldPositionOnPlane(Input.mousePosition, 0);
             transform.rotation = Quaternion.LookRotation(-GetDragVelocityPosition);
+            blurGauge = BlurUpdate();
+            pullMagn = dragStartPosition - dragPosition;
+            //   Debug.Log("Blur値: " + GetBlurGauge);
         }
+
+
         // マウスの左ボタンが離されたとき
         if (Input.GetMouseButtonUp(0) && isDragging)
         {
@@ -121,7 +127,7 @@ public class Player_Scripts : MonoBehaviour
         }
         shootTime -= 1.0f;
 
-        if (isShooted && PlayerTurn)
+        if (isShooted && PlayerTurn&& rb.velocity.magnitude >= 0.1f)
         {
             transform.rotation = Quaternion.LookRotation(-rb.velocity);
         }
@@ -130,7 +136,7 @@ public class Player_Scripts : MonoBehaviour
 
 
 
-        if (isShooted && shootTime < checkDelay && rb.velocity.magnitude < 0.01f && PlayerTurn)
+        if (isShooted && shootTime < checkDelay && rb.velocity.magnitude < 0.1f && PlayerTurn&& !isRespwan)
         {
             Debug.Log("ターン終了！！");
             rb.velocity = Vector3.zero;
@@ -145,11 +151,18 @@ public class Player_Scripts : MonoBehaviour
         // ボールがほとんど動いていない場合、速度を0にする
 
 
-        //ターン開始処理 仮でRキーでターンを開始する
+        //ターン開始処理 仮でRキーでターンを開始するデバック用
         if (Input.GetKeyDown(KeyCode.R))
         {
             PlayerTurn = true;
             isShooted = false;
+
+        }
+
+        //リスポーン処理 仮でMキーでリスポーンするデバック用
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Respwan();
 
         }
 
@@ -174,7 +187,7 @@ public class Player_Scripts : MonoBehaviour
 
 
     }
-
+    // スクリーン座標をワールド座標に変換
     private Vector3 GetWorldPositionOnPlane(Vector3 screenPosition, float z)
     {
         Ray ray = mainCamera.ScreenPointToRay(screenPosition);
@@ -186,17 +199,20 @@ public class Player_Scripts : MonoBehaviour
 
     public bool CheckPlayerEnd()
     {
-        return isShooted && shootTime < checkDelay && rb.velocity.magnitude < 0.1f && TurnEndFlag;
-    }
 
+        return isShooted && shootTime < checkDelay && rb.velocity.magnitude < 0.1f && TurnEndFlag ;
+    
+    }
+    // プレイヤーのターンを切り替えた際の初期化処理
     private void SwitchPlaerActive()
     {
         PlayerTurn = true;
         isShooted = false;
         TurnEndFlag = false;
+        isRespwan = false;
         blurGauge = 0;
     }
-
+    // Blurゲージの更新
     private float  BlurUpdate()
     {
         gauge_level += gauge_speed / interval * Time.deltaTime;
@@ -207,5 +223,15 @@ public class Player_Scripts : MonoBehaviour
 
         return gauge_level;
     }
+    // ボールのリスポーン
+    public  void Respwan()
+    {
+        isRespwan = true;
+        transform.position = RespwanPosition;
+        transform.rotation = new Quaternion(0,90,0,0);
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+    }
+
 }
 
