@@ -268,17 +268,16 @@ public class GameManager : MonoBehaviour
         if (currentGameState == GameState.PlayerTurn && _playerScripts.CheckPlayerEnd())
         {
             //プレイヤーの行動が終了した時にターン数を1追加する
-            
-
+            _playerTurnCount++;
             Debug.Log("StateChange EnemyTurn");
             currentGameState = GameState.EnemyTurn;
             OnGameStateChanged(GameState.EnemyTurn);
         }
         //後半のTrueはエネミーの行動完了を待つ
 
-        if (currentGameState == GameState.EnemyTurn && true)
+        if (currentGameState == GameState.EnemyTurn && _enemyManager.IsTurnChangeVelocity)
         {
-            _playerTurnCount++;
+            
             Debug.Log("StateChange PlayerTurn");
             currentGameState = GameState.PlayerTurn;
             OnGameStateChanged(GameState.PlayerTurn);
