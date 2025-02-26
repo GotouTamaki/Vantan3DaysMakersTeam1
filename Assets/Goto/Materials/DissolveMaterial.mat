@@ -28,12 +28,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NoiseTex:
-        m_Texture: {fileID: 2800000, guid: c9c13b2763e98954bbecbe6a5cedb2fa, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8ef605a3435a53e4fb4765b0741740bd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DissolveAmount: 1
+    - _DissolveAmount: 0
     - _EdgeWidth: 0.05
     - _FadeThreshold: 0.68
     m_Colors:
