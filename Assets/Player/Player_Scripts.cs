@@ -1,18 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using static Unity.VisualScripting.Member;
+using Random = UnityEngine.Random;
 
 public class Player_Scripts : MonoBehaviour
 {
-    // ƒhƒ‰ƒbƒOŠJŽnˆÊ’u
+    // ï¿½hï¿½ï¿½ï¿½bï¿½Oï¿½Jï¿½nï¿½Ê’u
     private Vector3 dragStartPosition;
-    // ƒhƒ‰ƒbƒOI—¹ˆÊ’u
+    // ï¿½hï¿½ï¿½ï¿½bï¿½Oï¿½Iï¿½ï¿½ï¿½Ê’u
     private Vector3 dragEndPosition;
-    // ƒhƒ‰ƒbƒO’†‚ÌˆÊ’u
+    // ï¿½hï¿½ï¿½ï¿½bï¿½Oï¿½ï¿½ï¿½ÌˆÊ’u
     private Vector3 dragPosition;
-    // ƒhƒ‰ƒbƒO’†‚©‚Ç‚¤‚©
+    // ï¿½hï¿½ï¿½ï¿½bï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½Ç‚ï¿½ï¿½ï¿½
     private bool isDragging = false;
     private bool PlayerTurn = true;
     private bool isShooted = false;
@@ -21,9 +24,9 @@ public class Player_Scripts : MonoBehaviour
     private Vector3 initialPosition;
     private float shootTime;
     private float waitTime = 1f;
-    private float checkDelay = 1.0f; // ‘¬“xƒ`ƒFƒbƒN‚ðŠJŽn‚·‚é‚Ü‚Å‚Ì’x‰„ŽžŠÔ
+    private float checkDelay = 1.0f; // ï¿½ï¿½ï¿½xï¿½`ï¿½Fï¿½bï¿½Nï¿½ï¿½ï¿½Jï¿½nï¿½ï¿½ï¿½ï¿½Ü‚Å‚Ì’xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-    // ƒhƒ‰ƒbƒO‚ÌÅ‘å’l
+    // ï¿½hï¿½ï¿½ï¿½bï¿½Oï¿½ÌÅ‘ï¿½l
     public static readonly int PullLimit = 6;
 
     public bool TurnEndFlag = false;
@@ -37,22 +40,24 @@ public class Player_Scripts : MonoBehaviour
     public bool GetIsShooted { get => isShooted; }
 
     [SerializeField]
-    // ƒ{[ƒ‹‚Ì•ûŒü‚ð‚Ú‚©‚·“x‡‚¢@0.0f ~ 1.0f(‚Ú‚©‚³‚È‚¢`‚Ú‚©‚·)
+    // ï¿½{ï¿½[ï¿½ï¿½ï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú‚ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½ï¿½ï¿½@0.0f ~ 1.0f(ï¿½Ú‚ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½`ï¿½Ú‚ï¿½ï¿½ï¿½)
     private float blurGauge = 0.0f;
 
     [SerializeField]
-    float gauge_speed = 10.0f; //ƒQ[ƒW‚Ì¶‰E‚·‚é‘¬“x
-    public float gauge_level = 0f;//ƒQ[ƒW‚Ì”’l‚Ì‘å‚«‚³
+    float gauge_speed = 10.0f; //ï¿½Qï¿½[ï¿½Wï¿½Ìï¿½ï¿½Eï¿½ï¿½ï¿½é‘¬ï¿½x
+    public float gauge_level = 0f;//ï¿½Qï¿½[ï¿½Wï¿½Ìï¿½ï¿½lï¿½Ì‘å‚«ï¿½ï¿½
     float interval = 2.0f;
     public static readonly float GaugeMax = 1.0f;
     public static readonly float GaugeMin = 0.0f;
 
     [SerializeField]
-    private int ballForce = 5; // ƒ{[ƒ‹‚É‰Á‚¦‚é—Í”{—¦
+    private int ballForce = 5; // ï¿½{ï¿½[ï¿½ï¿½ï¿½É‰ï¿½ï¿½ï¿½ï¿½ï¿½Í”{ï¿½ï¿½
 
-    // ƒ{[ƒ‹‚ÌƒŠƒXƒ|[ƒ“ˆÊ’u
+    [SerializeField] private float _maxSpeed;
+
+    // ï¿½{ï¿½[ï¿½ï¿½ï¿½Ìƒï¿½ï¿½Xï¿½|ï¿½[ï¿½ï¿½ï¿½Ê’u
     [SerializeField]
-    private Vector3 RespwanPosition = new Vector3(15.47f, 0, -1.94f); // ƒ{[ƒ‹‚ÌƒŠƒXƒ|[ƒ“ˆÊ’u
+    private Vector3 RespwanPosition = new Vector3(15.47f, 0, -1.94f); // ï¿½{ï¿½[ï¿½ï¿½ï¿½Ìƒï¿½ï¿½Xï¿½|ï¿½[ï¿½ï¿½ï¿½Ê’u
     private bool isRespwan = false;
 
     AudioSource _chargeAudioSource;
@@ -89,8 +94,8 @@ public class Player_Scripts : MonoBehaviour
     void Update()
     {
 
-        //Debug.Log("Pull’lF" + GetPullPower);
-        // ƒ}ƒEƒX‚Ì¶ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚Æ‚«
+        //Debug.Log("Pullï¿½lï¿½F" + GetPullPower);
+        // ï¿½}ï¿½Eï¿½Xï¿½Ìï¿½ï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½Æ‚ï¿½
         if (Input.GetMouseButtonDown(0) && PlayerTurn && !isShooted)
         {
             blurGauge = 0;
@@ -99,7 +104,7 @@ public class Player_Scripts : MonoBehaviour
             dragStartPosition = GetWorldPositionOnPlane(Input.mousePosition, 0);
             isDragging = true;
 
-            //ƒ`ƒƒ[ƒW‰¹ŠJŽn
+            //ï¿½`ï¿½ï¿½ï¿½[ï¿½Wï¿½ï¿½ï¿½Jï¿½n
             _chargeAudioSource.Play();
         }
 
@@ -109,14 +114,14 @@ public class Player_Scripts : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(-GetDragVelocityPosition);
             blurGauge = BlurUpdate();
             pullMagn = dragStartPosition - dragPosition;
-            //   Debug.Log("Blur’l: " + GetBlurGauge);
+            //   Debug.Log("Blurï¿½l: " + GetBlurGauge);
         }
 
 
-        // ƒ}ƒEƒX‚Ì¶ƒ{ƒ^ƒ“‚ª—£‚³‚ê‚½‚Æ‚«
+        // ï¿½}ï¿½Eï¿½Xï¿½Ìï¿½ï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½Æ‚ï¿½
         if (Input.GetMouseButtonUp(0) && isDragging)
         {
-            //ƒ`ƒƒ[ƒW‰¹’âŽ~
+            //ï¿½`ï¿½ï¿½ï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½~
             _chargeAudioSource.Stop();
 
             if(blurGauge > _succesePercent)
@@ -129,34 +134,44 @@ public class Player_Scripts : MonoBehaviour
             }
 
             
-            //‚±‚±‚ÅUI‚©‚çblurGauge‚Ì’l‚ðŽæ“¾‚·‚é
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½UIï¿½ï¿½ï¿½ï¿½blurGaugeï¿½Ì’lï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½
             //Get(blurGauge);
 
             dragEndPosition = GetWorldPositionOnPlane(Input.mousePosition, 0);
             isDragging = false;
 
-            // ƒhƒ‰ƒbƒO•ûŒü‚ðŒvŽZ
+            // ï¿½hï¿½ï¿½ï¿½bï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½vï¿½Z
             Vector3 dragDirection = dragEndPosition - dragStartPosition;
 
-            // ƒhƒ‰ƒbƒO•ûŒü‚Ìƒ}ƒCƒiƒX•ûŒü‚É—Í‚ð‰Á‚¦‚é
-            Vector3 force = -dragDirection.normalized; // —Í‚Ì‘å‚«‚³‚Í“K‹X’²®
+            // ï¿½hï¿½ï¿½ï¿½bï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½Ìƒ}ï¿½Cï¿½iï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½É—Í‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            Vector3 force = -dragDirection.normalized; // ï¿½Í‚Ì‘å‚«ï¿½ï¿½ï¿½Í“Kï¿½Xï¿½ï¿½ï¿½ï¿½
             //Debug.Log("Drag Direction: " + force);
 
-            // ƒ{[ƒ‹‚Ì•ûŒü‚ð‚Ú‚©‚·
+            // ï¿½{ï¿½[ï¿½ï¿½ï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú‚ï¿½ï¿½ï¿½
             force = BlurBall(force, blurGauge);
-            //Debug.Log("Blur’lF"+blurGauge);
+            //Debug.Log("Blurï¿½lï¿½F"+blurGauge);
    
             force = force * ballForce* GetPullPower;
-            //Debug.Log("Pull’lF" + pullForce.magnitude + "force’l: " + force);
-            rb.AddForce(force, ForceMode.Impulse);
+            //Debug.Log("Pullï¿½lï¿½F" + pullForce.magnitude + "forceï¿½l: " + force);
+            //rb.AddForce(force, ForceMode.Impulse);
+
+            if (force.magnitude > _maxSpeed)
+            {
+                force = force.normalized * _maxSpeed;
+            }
+            
+            rb.velocity = force;
             //Debug.Log("Drag Direction: " + force);
 
             isShooted = true;
-            shootTime = waitTime; // ƒ{[ƒ‹‚ª”­ŽË‚³‚ê‚½ŽžŠÔ‚ð‹L˜^
+            shootTime = waitTime; // ï¿½{ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë‚ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½Ô‚ï¿½ï¿½Lï¿½^
+            
+            // é›¢ã—ãŸã¨ãã«ã‚¿ãƒ¼ãƒ³ã‚’å¢—ã‚„ã™
+            GameManager.Instance.AddPlayerTurnCount();
         }
         shootTime -= Time.deltaTime;
 
-        if (isShooted && PlayerTurn&& rb.velocity.magnitude >= 0.3f)
+        if (isShooted && PlayerTurn && rb.velocity.magnitude >= 0.3f)
         {
             transform.rotation = Quaternion.LookRotation(-rb.velocity);
         }
@@ -167,7 +182,7 @@ public class Player_Scripts : MonoBehaviour
 
         if (isShooted && shootTime < checkDelay && rb.velocity.magnitude < 0.1f && PlayerTurn)
         {
-            Debug.Log("ƒ^[ƒ“I—¹II");
+            Debug.Log("ï¿½^ï¿½[ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½Iï¿½I");
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
             PlayerTurn = false;
@@ -175,7 +190,7 @@ public class Player_Scripts : MonoBehaviour
 
         }
 
-        //ƒ^[ƒ“ŠJŽnˆ— ‰¼‚ÅRƒL[‚Åƒ^[ƒ“‚ðŠJŽn‚·‚éƒfƒoƒbƒN—p
+        //ï¿½^ï¿½[ï¿½ï¿½ï¿½Jï¿½nï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Rï¿½Lï¿½[ï¿½Åƒ^ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Jï¿½nï¿½ï¿½ï¿½ï¿½fï¿½oï¿½bï¿½Nï¿½p
         if (Input.GetKeyDown(KeyCode.R))
         {
             PlayerTurn = true;
@@ -183,7 +198,7 @@ public class Player_Scripts : MonoBehaviour
 
         }
 
-        //ƒŠƒXƒ|[ƒ“ˆ— ‰¼‚ÅMƒL[‚ÅƒŠƒXƒ|[ƒ“‚·‚éƒfƒoƒbƒN—p
+        //ï¿½ï¿½ï¿½Xï¿½|ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Mï¿½Lï¿½[ï¿½Åƒï¿½ï¿½Xï¿½|ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½fï¿½oï¿½bï¿½Nï¿½p
         if (Input.GetKeyDown(KeyCode.M))
         {
             Respwan();
@@ -192,20 +207,28 @@ public class Player_Scripts : MonoBehaviour
 
     }
 
+    private void LateUpdate()
+    {
+        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+        Vector3 velo = rb.velocity;
+        velo.y = math.min(velo.y, 0);
+        rb.velocity = velo;
+    }
 
-    // ƒ{[ƒ‹‚Ì•ûŒü‚ð‚Ú‚©‚·
+
+    // ï¿½{ï¿½[ï¿½ï¿½ï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú‚ï¿½ï¿½ï¿½
     private Vector3 BlurBall(Vector3 direction, float blurGauge)
     {
         float invblur = 1 - blurGauge;
-        float maxAngle = Mathf.Lerp(0, 90, invblur); // blurGauge‚ÉŠî‚Ã‚¢‚ÄÅ‘åŠp“x‚ðÝ’è
+        float maxAngle = Mathf.Lerp(0, 90, invblur); // blurGaugeï¿½ÉŠï¿½Ã‚ï¿½ï¿½ÄÅ‘ï¿½pï¿½xï¿½ï¿½Ý’ï¿½
         Vector3 randomDirection = Quaternion.Euler(0, Random.Range(-maxAngle, maxAngle), 0) * direction;
 
-        //Debug.Log("blurŒ³’lF" + direction + " •ÏXŒã’l:" + randomDirection.normalized * direction.magnitude);
+        //Debug.Log("blurï¿½ï¿½ï¿½lï¿½F" + direction + " ï¿½ÏXï¿½ï¿½l:" + randomDirection.normalized * direction.magnitude);
         return randomDirection.normalized * direction.magnitude;
 
 
     }
-    // ƒXƒNƒŠ[ƒ“À•W‚ðƒ[ƒ‹ƒhÀ•W‚É•ÏŠ·
+    // ï¿½Xï¿½Nï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½Wï¿½É•ÏŠï¿½
     private Vector3 GetWorldPositionOnPlane(Vector3 screenPosition, float z)
     {
         Ray ray = mainCamera.ScreenPointToRay(screenPosition);
@@ -214,14 +237,14 @@ public class Player_Scripts : MonoBehaviour
         xy.Raycast(ray, out distance);
         return ray.GetPoint(distance);
     }
-    //Manager‚©‚ç‚Ìƒ^[ƒ“I—¹‚ÌŠm”F—p
+    //Managerï¿½ï¿½ï¿½ï¿½Ìƒ^ï¿½[ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ÌŠmï¿½Fï¿½p
     public bool CheckPlayerEnd()
     {
 
         return isShooted && shootTime < checkDelay && rb.velocity.magnitude < 0.1f && TurnEndFlag ;
     
     }
-    // ƒvƒŒƒCƒ„[‚Ìƒ^[ƒ“‚ðØ‚è‘Ö‚¦‚½Û‚Ì‰Šú‰»ˆ—
+    // ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ìƒ^ï¿½[ï¿½ï¿½ï¿½ï¿½Ø‚ï¿½Ö‚ï¿½ï¿½ï¿½ï¿½Û‚Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private void SwitchPlaerActive()
     {
         Debug.LogWarning("SwitchPlayerActive");
@@ -231,7 +254,7 @@ public class Player_Scripts : MonoBehaviour
         //isRespwan = false;
         blurGauge = 0;
     }
-    // BlurƒQ[ƒW‚ÌXV
+    // Blurï¿½Qï¿½[ï¿½Wï¿½ÌXï¿½V
     private float  BlurUpdate()
     {
         gauge_level += gauge_speed / interval * Time.deltaTime;
@@ -250,7 +273,7 @@ public class Player_Scripts : MonoBehaviour
 
         return gauge_level;
     }
-    // ƒ{[ƒ‹‚ÌƒŠƒXƒ|[ƒ“
+    // ï¿½{ï¿½[ï¿½ï¿½ï¿½Ìƒï¿½ï¿½Xï¿½|ï¿½[ï¿½ï¿½
     public  void Respwan()
     {
         //isRespwan = true;

@@ -3,23 +3,24 @@ using UnityEngine.SceneManagement;
 using System;
 
 
-//–{Manager‚Ì–ğŠ„AƒV[ƒ“‚Ì‘JˆÚŠÇ—‚ğs‚¤
+//ï¿½{Managerï¿½Ì–ï¿½ï¿½ï¿½ï¿½Aï¿½Vï¿½[ï¿½ï¿½ï¿½Ì‘Jï¿½ÚŠÇ—ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½
 
-//GameManager‚ÉŒo‰ßƒ^[ƒ“”‚ğŠÇ—‚·‚é‹@”\‚ğ’Ç‰Á‚·‚é
-//ƒvƒŒƒCƒ„[‚Ìƒ^[ƒ“”‚ÍƒvƒŒƒCƒ„[‚Ìs“®‚ªI—¹‚µ‚½‚ÉƒJƒEƒ“ƒg‚ğ1’Ç‰Á‚·‚é
-//‚Ü‚½AƒvƒŒƒCƒ„[‚ªƒXƒe[ƒWŠO‚Éo‚½‚Éƒ^[ƒ“”‚Í‚Q’Ç‰Á‚·‚é@ƒvƒŒƒCƒ„[‚ª‰æ–ÊŠO‚Éo‚½‚Ì”»’è‚ÍPlayer©‘Ì‚ªs‚¤
+//GameManagerï¿½ÉŒoï¿½ßƒ^ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç—ï¿½ï¿½ï¿½ï¿½ï¿½@ï¿½\ï¿½ï¿½Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½
+//ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ìƒ^ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Íƒvï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ìsï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÉƒJï¿½Eï¿½ï¿½ï¿½gï¿½ï¿½1ï¿½Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½
+//ï¿½Ü‚ï¿½ï¿½Aï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Xï¿½eï¿½[ï¿½Wï¿½Oï¿½Éoï¿½ï¿½ï¿½ï¿½ï¿½Éƒ^ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Í‚Qï¿½Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½@ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ÊŠOï¿½Éoï¿½ï¿½ï¿½ï¿½ï¿½Ì”ï¿½ï¿½ï¿½ï¿½Playerï¿½ï¿½ï¿½Ì‚ï¿½ï¿½sï¿½ï¿½
 
-//Œo‰ßƒ^[ƒ“”‚É‚Â‚¢‚Ä‚ÍATitleScene‚Å‰Šú‰»‚ğs‚¤
+//ï¿½oï¿½ßƒ^ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½É‚Â‚ï¿½ï¿½Ä‚ÍATitleSceneï¿½Åï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½
 
 public enum GameState
 {
     Title,
-    PlayerTurn,//ƒvƒŒƒCƒ„[‚Ìƒ^[ƒ“
-    EnemyTurn,//ƒGƒlƒ~[‚Ìƒ^[ƒ“
+    PlayerTurn,//ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ìƒ^ï¿½[ï¿½ï¿½
+    EnemyTurn,//ï¿½Gï¿½lï¿½~ï¿½[ï¿½Ìƒ^ï¿½[ï¿½ï¿½
     GameClear,
     Pause,
     GameOver,
-    Result
+    Result,
+    InAnimation
 }
 
 public enum SceneState
@@ -33,8 +34,8 @@ public enum SceneState
 }
 
 
-//GameState‚Ìó‘Ô‚É‚æ‚Á‚ÄScene‚ÌŠÇ—‚ğs‚¦‚é‚æ‚¤‚É‚µ‚½•û‚ª‚¢‚¢‚©‚à‚µ‚ê‚È‚¢
-//¨Œ»İƒAƒNƒeƒBƒu‚É‚È‚Á‚Ä‚¢‚éScene‚ğæ“¾‚µ‚ÄAState‚ÌXV‚ğs‚¤cH
+//GameStateï¿½Ìï¿½Ô‚É‚ï¿½ï¿½ï¿½ï¿½Sceneï¿½ÌŠÇ—ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½æ‚¤ï¿½É‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½
+//ï¿½ï¿½ï¿½ï¿½ï¿½İƒAï¿½Nï¿½eï¿½Bï¿½uï¿½É‚È‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Sceneï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ÄAStateï¿½ÌXï¿½Vï¿½ï¿½ï¿½sï¿½ï¿½ï¿½cï¿½H
 
 
 
@@ -44,21 +45,23 @@ public class GameManager : MonoBehaviour
     public event Action<GameState> OnGameStateChanged;
 
 
-    //GameManager‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğŠi”[‚·‚é•Ï”
+    //GameManagerï¿½ÌƒCï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½iï¿½[ï¿½ï¿½ï¿½ï¿½Ïï¿½
     public static GameManager Instance { get; private set; }
-    public GameState currentGameState { get; private set; } = GameState.PlayerTurn;
+    public GameState currentGameState { get; set; } = GameState.PlayerTurn;
 
     // public SceneState currentSceneState { get; private set; } = SceneState.Title;
 
     private SceneState _currentSceneState = SceneState.Title;
 
 
-    //ƒvƒŒƒCƒ„[‚Ìƒ^[ƒ“”‚ğŠi”[‚·‚é•Ï”
-    private int _playerTurnCount = 1;
+    //ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ìƒ^ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½iï¿½[ï¿½ï¿½ï¿½ï¿½Ïï¿½
+    private int _playerTurnCount;
     public int PlayerTurnCount => _playerTurnCount;
 
-
-
+    public void AddPlayerTurnCount()
+    {
+        _playerTurnCount++;
+    }
 
     public EnemyManager _enemyManager;
     public OutOfBoundsChecker _outOfBoundsChecker;
@@ -82,10 +85,10 @@ public class GameManager : MonoBehaviour
 
     public Player_Scripts _playerScripts;
 
-    //GameManager‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ª‘¶İ‚·‚é‚©‚Ç‚¤‚©‚ğ•Ô‚·ƒvƒƒpƒeƒB
+    //GameManagerï¿½ÌƒCï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½İ‚ï¿½ï¿½é‚©ï¿½Ç‚ï¿½ï¿½ï¿½ï¿½ï¿½Ô‚ï¿½ï¿½vï¿½ï¿½ï¿½pï¿½eï¿½B
     private void Awake()
     {
-        if (Instance == null)//ƒCƒ“ƒXƒ^ƒ“ƒX‚ª‘¶İ‚µ‚È‚¢ê‡
+        if (Instance == null)//ï¿½Cï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½İ‚ï¿½ï¿½È‚ï¿½ï¿½ê‡
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
@@ -105,7 +108,7 @@ public class GameManager : MonoBehaviour
 
 
 
-        //ƒfƒoƒbƒO‚É•s•K—v‚È‚½‚ß‚ÉƒRƒƒ“ƒgƒAƒEƒg
+        //ï¿½fï¿½oï¿½bï¿½Oï¿½É•sï¿½Kï¿½vï¿½È‚ï¿½ï¿½ß‚ÉƒRï¿½ï¿½ï¿½ï¿½ï¿½gï¿½Aï¿½Eï¿½g
         _playerScripts = FindAnyObjectByType<Player_Scripts>();
         ////kari
         currentGameState = GameState.Title;
@@ -130,14 +133,14 @@ public class GameManager : MonoBehaviour
 
         //if(currentGameState == GameState.PlayerTurn && _playerScripts.CheckPlayerEnd())
         //{
-        //    //ƒvƒŒƒCƒ„[‚Ìs“®‚ªI—¹‚µ‚½‚Éƒ^[ƒ“”‚ğ1’Ç‰Á‚·‚é
+        //    //ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ìsï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Éƒ^ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½
         //    _playerTurnCount++;
 
         //    Debug.Log("StateChange EnemyTurn");
         //    currentGameState = GameState.EnemyTurn;
         //    OnGameStateChanged(GameState.EnemyTurn);
         //}
-        ////Œã”¼‚ÌTrue‚ÍƒGƒlƒ~[‚Ìs“®Š®—¹‚ğ‘Ò‚Â
+        ////ï¿½ã”¼ï¿½ï¿½Trueï¿½ÍƒGï¿½lï¿½~ï¿½[ï¿½Ìsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò‚ï¿½
         //if (currentGameState == GameState.EnemyTurn && true)
         //{
         //    Debug.Log("StateChange PlayerTurn");
@@ -147,7 +150,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    //Œ»İƒAƒNƒeƒBƒu‚É‚È‚Á‚Ä‚¢‚éƒV[ƒ“‚ğæ“¾‚µ‚ÄAState‚ÌXV‚ğs‚¤‹@”\‚ª•K—v‚É‚È‚é
+    //ï¿½ï¿½ï¿½İƒAï¿½Nï¿½eï¿½Bï¿½uï¿½É‚È‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Vï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ÄAStateï¿½ÌXï¿½Vï¿½ï¿½ï¿½sï¿½ï¿½ï¿½@ï¿½\ï¿½ï¿½ï¿½Kï¿½vï¿½É‚È‚ï¿½
 
 
     private void switchScene()
@@ -186,10 +189,10 @@ public class GameManager : MonoBehaviour
 
 
 
-    //ˆÈ‰º‚ÉTitleScene‚Ìˆ—‚ğ‹Lq‚·‚é
-    //TitleScene‚Ìˆ—
-    //ƒ^[ƒ“”‚Ì‰Šú‰»‚ğs‚¤
-    //SceneState‚ğStage1‚É•ÏX‚µ‚ÄƒV[ƒ“‚Ì‘JˆÚ‚ğs‚¤
+    //ï¿½È‰ï¿½ï¿½ï¿½TitleSceneï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Lï¿½qï¿½ï¿½ï¿½ï¿½
+    //TitleSceneï¿½Ìï¿½ï¿½ï¿½
+    //ï¿½^ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½
+    //SceneStateï¿½ï¿½Stage1ï¿½É•ÏXï¿½ï¿½ï¿½ÄƒVï¿½[ï¿½ï¿½ï¿½Ì‘Jï¿½Ú‚ï¿½ï¿½sï¿½ï¿½
     private void HandleTitleScene()
     {
         currentGameState = GameState.Title;
@@ -207,11 +210,11 @@ public class GameManager : MonoBehaviour
     }
 
 
-    //ˆÈ‰º‚ÉInGame‚Ìˆ—‚ğ‹Lq‚·‚é(ƒV[ƒ“ = Stage1@‚©@Stage2‚Ì)
-    //ingame’†‚Ìˆ—
-    //ƒvƒŒƒCƒ„[‚Ìs“®‚ªI—¹‚µ‚½‚Éƒ^[ƒ“”‚ğ1’Ç‰Á‚·‚é
-    //ƒvƒŒƒCƒ„[‚ªƒXƒe[ƒWŠO‚Éo‚½‚Íƒ^[ƒ“”‚ğ‚Q’Ç‰Á‚·‚é
-    //GameState‚ÌPlayerTurn‚ÆEnemyTurn‚ÌØ‚è‘Ö‚¦‚ğs‚¤
+    //ï¿½È‰ï¿½ï¿½ï¿½InGameï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Lï¿½qï¿½ï¿½ï¿½ï¿½(ï¿½Vï¿½[ï¿½ï¿½ = Stage1ï¿½@ï¿½ï¿½ï¿½@Stage2ï¿½Ìï¿½)
+    //ingameï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
+    //ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ìsï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Éƒ^ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½
+    //ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Xï¿½eï¿½[ï¿½Wï¿½Oï¿½Éoï¿½ï¿½ï¿½ï¿½ï¿½Íƒ^ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Qï¿½Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½
+    //GameStateï¿½ï¿½PlayerTurnï¿½ï¿½EnemyTurnï¿½ÌØ‚ï¿½Ö‚ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½
 
     private void HandleInGame()
     {
@@ -232,7 +235,7 @@ public class GameManager : MonoBehaviour
 
 
 
-        ////ƒfƒoƒbƒO—p‚ÉEnterƒL[‚Åƒ^[ƒ“‚ği‚ß‚é
+        ////ï¿½fï¿½oï¿½bï¿½Oï¿½pï¿½ï¿½Enterï¿½Lï¿½[ï¿½Åƒ^ï¿½[ï¿½ï¿½ï¿½ï¿½iï¿½ß‚ï¿½
         //if (currentGameState == GameState.PlayerTurn && Input.GetKeyDown(KeyCode.Return))
         //{
         //    Debug.Log("PlayerTurn End to EnemyTurn");
@@ -249,7 +252,7 @@ public class GameManager : MonoBehaviour
         //    currentGameState = GameState.PlayerTurn;
         //}
 
-        ////‰¼‚ÌStageOutˆ—
+        ////ï¿½ï¿½ï¿½ï¿½StageOutï¿½ï¿½ï¿½ï¿½
         //if (Input.GetKeyDown(KeyCode.B))
         //{
         //    _playerTurnCount += 2;
@@ -258,7 +261,7 @@ public class GameManager : MonoBehaviour
         //}
 
 
-        //ƒvƒŒƒCƒ„[‚ªƒXƒe[ƒWŠO‚Éo‚½‚Ìˆ—
+        //ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Xï¿½eï¿½[ï¿½Wï¿½Oï¿½Éoï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
         if (!_outOfBoundsChecker.CheckOutOfBounds(_playerScripts.GetPlayerPosition))
         {
             _playerTurnCount += 2;
@@ -270,32 +273,32 @@ public class GameManager : MonoBehaviour
        
         if (currentGameState == GameState.PlayerTurn && _playerScripts.CheckPlayerEnd())
         {
-            //ƒvƒŒƒCƒ„[‚Ìs“®‚ªI—¹‚µ‚½‚Éƒ^[ƒ“”‚ğ1’Ç‰Á‚·‚é
-            _playerTurnCount++;
+            //ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ìsï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Éƒ^ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½
+            //_playerTurnCount++;
             Debug.Log("StateChange EnemyTurn");
-            currentGameState = GameState.EnemyTurn;
+            currentGameState = GameState.InAnimation;
             OnGameStateChanged(GameState.EnemyTurn);
         }
-        //Œã”¼‚ÌTrue‚ÍƒGƒlƒ~[‚Ìs“®Š®—¹‚ğ‘Ò‚Â
+        //ï¿½ã”¼ï¿½ï¿½Trueï¿½ÍƒGï¿½lï¿½~ï¿½[ï¿½Ìsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò‚ï¿½
 
         if (currentGameState == GameState.EnemyTurn && _enemyManager.IsTurnChangeVelocity)
         {
             
             Debug.Log("StateChange PlayerTurn");
-            currentGameState = GameState.PlayerTurn;
+            currentGameState = GameState.InAnimation;
             OnGameStateChanged(GameState.PlayerTurn);
         }
 
 
 
-   //ƒQ[ƒ€ƒNƒŠƒA”»’èˆ—iƒ{ƒX‚ª€–S‚µ‚½‚çƒQ[ƒ€ƒNƒŠƒA‚É‚·‚éj
+   //ï¿½Qï¿½[ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½èˆï¿½ï¿½ï¿½iï¿½{ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Qï¿½[ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Aï¿½É‚ï¿½ï¿½ï¿½j
         if (!_enemyManager.IsBossAlive)
         {
            
             Debug.Log("GameClear!!");
             Debug.Log("PlayerTurnCount:" + _playerTurnCount);
             currentGameState = GameState.GameClear;
-            //ƒŠƒUƒ‹ƒgƒV[ƒ“‚Ö‚Ì‘JˆÚˆ—
+            //ï¿½ï¿½ï¿½Uï¿½ï¿½ï¿½gï¿½Vï¿½[ï¿½ï¿½ï¿½Ö‚Ì‘Jï¿½Úï¿½ï¿½ï¿½
             if (currentGameState == GameState.GameClear)
             {
                 CurrentSceneState = SceneState.Result;
@@ -304,11 +307,11 @@ public class GameManager : MonoBehaviour
         }
 
 
-        ////Stage2@or Result‚É‘JˆÚ‚·‚é
+        ////Stage2ï¿½@or Resultï¿½É‘Jï¿½Ú‚ï¿½ï¿½ï¿½
         //if (Input.GetKeyDown(KeyCode.Space))
         //{
 
-        //    if (CurrentSceneState == SceneState.Stage1 && currentGameState == GameState.GameClear)//Stage‚P‚ğƒNƒŠƒA‚µ‚½‚çStage2‚É‘JˆÚ‚·‚é
+        //    if (CurrentSceneState == SceneState.Stage1 && currentGameState == GameState.GameClear)//Stageï¿½Pï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Stage2ï¿½É‘Jï¿½Ú‚ï¿½ï¿½ï¿½
         //    { 
         //        
         //    }
@@ -317,9 +320,9 @@ public class GameManager : MonoBehaviour
     }
 
 
-    //ˆÈ‰º‚ÉResultsScene‚Å‚Ìˆ—‚ğ‹Lq‚·‚é
-    //ResultScene‚Ìˆ—
-    //ƒŠƒUƒ‹ƒg‚Æ‚µ‚ÄStage‚P‚ÆStage‚Q‚Å‚Ç‚Ì’ö“xƒ^[ƒ“”‚ª‚©‚©‚Á‚½‚©‚ğ•\¦‚·‚é
+    //ï¿½È‰ï¿½ï¿½ï¿½ResultsSceneï¿½Å‚Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Lï¿½qï¿½ï¿½ï¿½ï¿½
+    //ResultSceneï¿½Ìï¿½ï¿½ï¿½
+    //ï¿½ï¿½ï¿½Uï¿½ï¿½ï¿½gï¿½Æ‚ï¿½ï¿½ï¿½Stageï¿½Pï¿½ï¿½Stageï¿½Qï¿½Å‚Ç‚Ì’ï¿½ï¿½xï¿½^ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     private void HandleResultScene()
     {
@@ -340,7 +343,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    //ƒXƒ^[ƒgƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚ÉƒV[ƒ“‚ğStage1‚É•ÏX‚·‚é
+    //ï¿½Xï¿½^ï¿½[ï¿½gï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÉƒVï¿½[ï¿½ï¿½ï¿½ï¿½Stage1ï¿½É•ÏXï¿½ï¿½ï¿½ï¿½
     public void PushStartButton()
     {
         CurrentSceneState = SceneState.Stage1;

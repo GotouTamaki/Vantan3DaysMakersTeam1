@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -19,6 +20,8 @@ public class ArrowScript : MonoBehaviour
 
     private Vector3 arrow_scale = new(1, 1, 1);
     [SerializeField] float drag_magnitude = 0.5f;
+    [SerializeField] private Vector3 _defaultScale;
+    [SerializeField] private float _maxScale;
     private float pull_power;
 
     void Start()
@@ -27,6 +30,7 @@ public class ArrowScript : MonoBehaviour
         spriteRenderer.enabled = false;
 
         Player_Scripts = player.GetComponent<Player_Scripts>();
+        transform.localScale = _defaultScale;
     }
 
 
@@ -49,7 +53,9 @@ public class ArrowScript : MonoBehaviour
             this.transform.localRotation = q;
 
             pull_power = Player_Scripts.GetPullPower;
-            this.transform.localScale = arrow_scale * drag_magnitude * pull_power;
+            Vector3 newScale = _defaultScale;
+            newScale.x = Math.Min(drag_magnitude * pull_power, _maxScale);
+            this.transform.localScale = newScale;//arrow_scale * drag_magnitude * pull_power;
 
             this.transform.position = new Vector3(this.transform.position.x, _adjustY, this.transform.position.z);
         }
