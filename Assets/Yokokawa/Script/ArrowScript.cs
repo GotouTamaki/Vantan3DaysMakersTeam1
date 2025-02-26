@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,38 +8,54 @@ public class ArrowScript : MonoBehaviour
 {
     [SerializeField] GameObject arrow;
     [SerializeField] GameObject player;
-    [SerializeField] Player_Scripts player_Scripts;
+    private Player_Scripts Player_Scripts;
 
-    Vector3 drag_Position;
-    float drag_magnitude;
+    SpriteRenderer spriteRenderer;
 
-    Vector3 player_position;
+    private Vector3 player_Position;
 
-    Vector3 debug_position;
+    private Vector3 drag_Velocity;
+
+    private Vector3 arrow_scale = new(1, 1, 1);
+    [SerializeField] float drag_magnitude = 0.5f;
+    private float pull_power;
 
     void Start()
     {
-       
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.enabled = false;
 
+        Player_Scripts = player.GetComponent<Player_Scripts>();
     }
 
-   
+
     void Update()
     {
-       //drag_Position =  player_Scripts.GetDragVelocityPosition;
-       //drag_magnitude =  drag_Position.magnitude;
 
-        if (Input.GetMouseButtonDown(0))
-        { 
-            Quaternion q = Quaternion.Euler(debug_position);
-            player_position = player_Scripts.GetPlayerPosition;
+        if (!Player_Scripts.GetIsShooted && Input.GetMouseButton(0))
+        {
+            spriteRenderer.enabled = true;
+            player_Position = Player_Scripts.GetPlayerPosition;
+            this.transform.position = player_Position;
 
-            Debug.Log(player_position);
-            this.transform.position = player_position;
-            this.transform.rotation = q;
-            
-            
+            Quaternion x = Quaternion.AngleAxis(90, new Vector3(1, 0, 0));
+            Quaternion y = Quaternion.AngleAxis(-90, new Vector3(0, 1, 0));
+
+            drag_Velocity = Player_Scripts.GetDragVelocityPosition;
+            // drag_Velocity = drag_Velocity.normalized;
+            Quaternion q = Quaternion.LookRotation(drag_Velocity) * y * x;
+
+            this.transform.localRotation = q;
+
+            pull_power = Player_Scripts.GetPullPower;
+            this.transform.localScale = arrow_scale * drag_magnitude * pull_power;
         }
-        
+        else
+        {
+            spriteRenderer.enabled = false;
+        }
     }
+
 }
+
+
