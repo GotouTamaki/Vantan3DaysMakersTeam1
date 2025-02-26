@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 public class Boss : EnemyBase
 {
@@ -12,12 +13,20 @@ public class Boss : EnemyBase
         _player = FindAnyObjectByType<Player_Scripts>();
     }
 
-    public override void Execute()
+    public override async UniTaskVoid Execute()
     {
         if (GetIsAlive)
         {
-            Vector3 shotVector = (_player.transform.position - this.transform.position).normalized;
-            _rigidbody.AddForce(shotVector * _shotPower, ForceMode.Impulse);
+            _currentAttackTurnCount--;
+
+            if (_currentAttackTurnCount <= 0)
+            {
+                Vector3 shotVector = (_player.transform.position - this.transform.position).normalized;
+                _rigidbody.AddForce(shotVector * _shotPower, ForceMode.Impulse);
+
+                await UniTask.WaitUntil(() => GetVelocity.sqrMagnitude <= 0.1f * 0.1f);
+                _currentAttackTurnCount = _attackTurnCount;
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -7,25 +8,24 @@ public class EnemyManager : MonoBehaviour
     private EnemyBase[] _enemies;
     private OutOfBoundsChecker _outOfBoundsChecker;
     private TurnActionManager _turnActionManager;
-    private event Action _enemyTurnEvent;
+    private event Func<UniTaskVoid> _enemyTurnEvent;
 
     public bool IsAnnihilation => !_enemies.Any(enemy => enemy.GetIsAlive);
 
-    private void OnEnable()
-    {
-        _turnActionManager = FindAnyObjectByType<TurnActionManager>();
-        _turnActionManager.SwitchEnemyTurn.AddListener(Execute);
-    }
+    public bool IsBossAlive => !_enemies.FirstOrDefault(enemy => enemy as Boss).GetIsAlive;
 
     void Start()
     {
         _enemies = FindObjectsByType<EnemyBase>(FindObjectsSortMode.None);
         _outOfBoundsChecker = FindAnyObjectByType<OutOfBoundsChecker>();
+        _turnActionManager = FindAnyObjectByType<TurnActionManager>();
 
         foreach (EnemyBase enemy in _enemies)
         {
             _enemyTurnEvent += enemy.Execute;
         }
+
+        _turnActionManager.SwitchEnemyTurn.AddListener(Execute);
     }
 
     public void CheckEnemiesIsAlive()
@@ -43,7 +43,7 @@ public class EnemyManager : MonoBehaviour
 
     public void Execute()
     {
-        _enemyTurnEvent.Invoke();
+        _enemyTurnEvent.Invoke().Forget();
     }
 
     private void OnDisable()

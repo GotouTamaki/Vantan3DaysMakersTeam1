@@ -143,13 +143,8 @@ public class Player_Scripts : MonoBehaviour
             rb.angularVelocity = Vector3.zero;
             PlayerTurn = false;
             TurnEndFlag = true;
-            //ターンを変更するのを渡す処理
 
-            //
         }
-        //Debug.Log("PlayerTurn: " + shootTime);
-        // ボールがほとんど動いていない場合、速度を0にする
-
 
         //ターン開始処理 仮でRキーでターンを開始するデバック用
         if (Input.GetKeyDown(KeyCode.R))
@@ -196,7 +191,7 @@ public class Player_Scripts : MonoBehaviour
         xy.Raycast(ray, out distance);
         return ray.GetPoint(distance);
     }
-
+    //Managerからのターン終了の確認用
     public bool CheckPlayerEnd()
     {
 
@@ -219,6 +214,14 @@ public class Player_Scripts : MonoBehaviour
         if (gauge_level > GaugeMax || gauge_level < GaugeMin)
         {
             gauge_speed *= -1.0f;
+        }
+
+        if (gauge_level > GaugeMax) {
+            gauge_level = GaugeMax;
+        }
+        if (gauge_level < GaugeMin)
+        {
+            gauge_level = GaugeMin;
         }
 
         return gauge_level;
