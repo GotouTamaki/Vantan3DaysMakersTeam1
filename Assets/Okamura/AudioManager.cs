@@ -14,12 +14,12 @@ public class AudioManager : MonoBehaviour
     static AudioManager _instance;
     public static AudioManager Instance => _instance;
 
+    [SerializeField] AudioSource _audioSourceBGM;
+    [SerializeField] AudioSource _audioSourceSE;
     [SerializeField] float GlobalVolumeBGM;
     [SerializeField] float GlobalVolumeSE;
     [SerializeField] AudioData[] _audioDataBGM;
     [SerializeField] AudioData[] _audioDataSE;
-    AudioSource _audioSourceBGM;
-    AudioSource _audioSourceSE;
 
     private void Awake()
     {
@@ -32,17 +32,17 @@ public class AudioManager : MonoBehaviour
             _instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        AudioSource[] audioSources = GetComponents<AudioSource>();
-        if(audioSources.Length >= 2)
-        {
-            _audioSourceBGM = audioSources[0];
-            _audioSourceSE = audioSources[1];
-        }
-        else
-        {
-            _audioSourceBGM = audioSources[0];
-            _audioSourceSE = this.gameObject.AddComponent<AudioSource>();
-        }
+        //AudioSource[] audioSources = GetComponents<AudioSource>();
+        //if(audioSources.Length >= 2)
+        //{
+        //    _audioSourceBGM = audioSources[0];
+        //    _audioSourceSE = audioSources[1];
+        //}
+        //else
+        //{
+        //    _audioSourceBGM = audioSources[0];
+        //    _audioSourceSE = this.gameObject.AddComponent<AudioSource>();
+        //}
     }
 
     public void PlayClipBGM(int clipIndex)
@@ -67,8 +67,8 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            _audioSourceSE.volume = _audioDataBGM[clipIndex].VolumeIndex * GlobalVolumeSE;
-            _audioSourceSE.PlayOneShot(_audioDataBGM[clipIndex].AudioClip);
+            _audioSourceSE.volume = _audioDataSE[clipIndex].VolumeIndex * GlobalVolumeSE;
+            _audioSourceSE.PlayOneShot(_audioDataSE[clipIndex].AudioClip);
         }
     }
 
