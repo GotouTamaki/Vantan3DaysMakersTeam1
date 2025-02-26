@@ -476,14 +476,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _waitTimeDuration: 1
   _turnCntText: {fileID: 7797371443416009108}
-  _enabledImage: {fileID: 0}
-  _disabledImage: {fileID: 0}
+  _enabledImage: {fileID: 21300000, guid: c356592b665edbd4389c81f760e672ae, type: 3}
+  _disabledImage: {fileID: 21300000, guid: 9fc30f4cab7982246bfeb06765b2c34a, type: 3}
   _reviewImages:
   - {fileID: 7797371443416009107}
   - {fileID: 7797371443416009106}
   - {fileID: 7797371443416009105}
   _penguinComment: {fileID: 7797371443416009104}
-  _penguinComments: []
+  _penguinComments:
+  - aaaaa
+  - bbbbb
+  - ccccc
   _scoreIndex: 10
   _returnTitleButton: {fileID: 7797371443416009103}
 --- !u!4 &2051755019

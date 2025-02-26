@@ -159,6 +159,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case SceneState.Stage1:
+                _playerTurnCount = 1;
                 SceneController.Instance.LoadStage1Scene();
 
                 currentGameState = GameState.PlayerTurn;

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7768947856309123954}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -49,9 +49,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TurnEndFlag: 0
   blurGauge: 0
-  gauge_speed: 10
+  gauge_speed: 8
   gauge_level: 0
-  ballForce: 30
+  ballForce: 15
   dragCoefficient: 0.8
   RespwanPosition: {x: 0, y: 0, z: 0}
 --- !u!54 &4095676120627800211

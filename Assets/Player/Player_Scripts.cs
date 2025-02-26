@@ -47,7 +47,6 @@ public class Player_Scripts : MonoBehaviour
     public static readonly float GaugeMax = 1.0f;
     public static readonly float GaugeMin = 0.0f;
 
-    //
     [SerializeField]
     private int ballForce = 5; // ƒ{[ƒ‹‚É‰Á‚¦‚é—Í”{—¦
 
