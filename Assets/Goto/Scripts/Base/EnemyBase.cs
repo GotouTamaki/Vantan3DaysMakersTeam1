@@ -10,11 +10,14 @@ public abstract class EnemyBase : MonoBehaviour
     protected OutOfBoundsChecker _outOfBoundsChecker;
     protected Rigidbody _rigidbody;
     protected bool _isAlive = true;
+    protected bool _isActed;
     protected int _currentAttackTurnCount;
 
     public Vector3 GetVelocity => _rigidbody.velocity;
 
     public bool GetIsAlive => _isAlive;
+
+    public bool GetIsActed => _isActed;
 
     public int GetAttackTurnCount => _attackTurnCount;
 

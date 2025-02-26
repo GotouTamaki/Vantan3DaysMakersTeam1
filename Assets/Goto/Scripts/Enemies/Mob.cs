@@ -17,6 +17,7 @@ public class Mob : EnemyBase
     {
         if (GetIsAlive)
         {
+            _isActed = false;
             _currentAttackTurnCount--;
 
             if (_currentAttackTurnCount <= 0)
@@ -27,6 +28,8 @@ public class Mob : EnemyBase
                 await UniTask.WaitUntil(() => GameManager.Instance.currentGameState == GameState.PlayerTurn);
                 _currentAttackTurnCount = _attackTurnCount;
             }
+
+            _isActed = true;
         }
     }
 }
