@@ -21,52 +21,48 @@ public class ResultManager : MonoBehaviour
     private void Awake()
     {
         _gameManager = FindAnyObjectByType<GameManager>();
+        AudioManager.Instance.PlayClipBGM(2);
     }
     private async void Start()
     {
         Random.InitState((int)Time.realtimeSinceStartup);
         _returnTitleButton.onClick.AddListener(GameManager.Instance.ChangeStateTitle);
         await UniTask.WaitForSeconds(_waitTimeDuration);
-        //ここのマジックナンバーは後にGameManagerから数字を取得する形にする
+
+
         _turnCntText.text = $"{_gameManager.PlayerTurnCount}";
 
         await UniTask.WaitForSeconds(_waitTimeDuration);
 
-        //sakanakirikae
-        //星の表示数をgameManagerから持ってくる
-        //１～３
-        int scorerdNumber = 0;
-        scorerdNumber = 3 - (int)(_gameManager.PlayerTurnCount / _scoreIndex);
-        if(scorerdNumber > 1)
+        _reviewImages[0].sprite = _enabledImage;
+
+        await UniTask.WaitForSeconds(_waitTimeDuration / 2);
+
+        if(10 > GameManager.Instance.PlayerTurnCount)
         {
-            scorerdNumber = 1;
+            _reviewImages[1].sprite = _enabledImage;
         }
-        for (int i = 0; i < 3; i++)
+
+        await UniTask.WaitForSeconds(_waitTimeDuration / 2);
+
+        if (6 > GameManager.Instance.PlayerTurnCount)
         {
-            if(i < scorerdNumber)
-            {
-                _reviewImages[i].sprite = _enabledImage;
-            }
-            else
-            {
-                _reviewImages[i].sprite= _disabledImage;
-            }
-            await UniTask.WaitForSeconds(_waitTimeDuration / 2);
+            _reviewImages[2].sprite = _enabledImage;
         }
-        
-        await UniTask.WaitForSeconds(_waitTimeDuration);
-        //penguin comment
-        switch(scorerdNumber)
+
+        await UniTask.WaitForSeconds(_waitTimeDuration / 2);
+
+        if (6 > GameManager.Instance.PlayerTurnCount)
         {
-            case 1:
-                _penguinComment.text = _penguinCommentsScore1[Random.Range(0, _penguinCommentsScore1.Length)];
-                break;
-            case 2:
-                _penguinComment.text = _penguinCommentsScore2[Random.Range(0, _penguinCommentsScore2.Length)];
-                break;
-            case 3:
-                _penguinComment.text = _penguinCommentsScore3[Random.Range(0, _penguinCommentsScore3.Length)];
-                break;
+            _penguinComment.text = _penguinCommentsScore3[Random.Range(0, _penguinCommentsScore3.Length)];
+        }
+        else if (10 > GameManager.Instance.PlayerTurnCount)
+        {
+            _penguinComment.text = _penguinCommentsScore2[Random.Range(0, _penguinCommentsScore2.Length)];
+        }
+        else
+        {
+            _penguinComment.text = _penguinCommentsScore1[Random.Range(0, _penguinCommentsScore1.Length)];
         }
     }
     private void OnDisable()
