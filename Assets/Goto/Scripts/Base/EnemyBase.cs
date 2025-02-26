@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public abstract class EnemyBase : MonoBehaviour
 {
+    [SerializeField] protected ParticleSystem _deadEffect;
     [SerializeField] protected int _attackTurnCount = 3;
 
     protected OutOfBoundsChecker _outOfBoundsChecker;
@@ -14,6 +15,8 @@ public abstract class EnemyBase : MonoBehaviour
     public Vector3 GetVelocity => _rigidbody.velocity;
 
     public bool GetIsAlive => _isAlive;
+
+    public int GetAttackTurnCount => _attackTurnCount;
 
     public void SetIsAlive(bool isAlive)
     {
@@ -37,5 +40,6 @@ public abstract class EnemyBase : MonoBehaviour
     public virtual void OnDead()
     {
         this.gameObject.SetActive(false);
+        Instantiate(_deadEffect, this.transform.position, _deadEffect.transform.rotation);
     }
 }

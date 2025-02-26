@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
+    [SerializeField] private float _turnChangeVelocityThreshold = 0.1f;
+
     private EnemyBase[] _enemies;
     private OutOfBoundsChecker _outOfBoundsChecker;
     private TurnActionManager _turnActionManager;
@@ -14,7 +16,9 @@ public class EnemyManager : MonoBehaviour
 
     public bool IsBossAlive => !_enemies.FirstOrDefault(enemy => enemy as Boss).GetIsAlive;
 
-    void Start()
+    public bool IsTurnChangeVelocity => _enemies.Max(enemy => enemy.GetVelocity.sqrMagnitude) <= _turnChangeVelocityThreshold * _turnChangeVelocityThreshold;
+
+    private void Start()
     {
         _enemies = FindObjectsByType<EnemyBase>(FindObjectsSortMode.None);
         _outOfBoundsChecker = FindAnyObjectByType<OutOfBoundsChecker>();
