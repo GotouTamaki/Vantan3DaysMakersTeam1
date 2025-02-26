@@ -50,9 +50,6 @@ public class Player_Scripts : MonoBehaviour
     [SerializeField]
     private int ballForce = 5; // ボールに加える力倍率
 
-    [SerializeField]
-    private float dragCoefficient = 0.8f; // 速度減衰係数
-
     // ボールのリスポーン位置
     [SerializeField]
     private Vector3 RespwanPosition = new Vector3(15.47f, 0, -1.94f); // ボールのリスポーン位置
@@ -195,12 +192,6 @@ public class Player_Scripts : MonoBehaviour
 
     }
 
-    // FixedUpdate is called once per physics update
-    void FixedUpdate()
-    {
-        // 速度を徐々に減少させる
-        rb.velocity *= dragCoefficient;
-    }
 
     // ボールの方向をぼかす
     private Vector3 BlurBall(Vector3 direction, float blurGauge)

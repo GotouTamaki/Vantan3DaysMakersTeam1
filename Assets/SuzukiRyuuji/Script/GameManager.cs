@@ -159,7 +159,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case SceneState.Stage1:
-                _playerTurnCount = 1;
+                _playerTurnCount = 0;
                 SceneController.Instance.LoadStage1Scene();
 
                 currentGameState = GameState.PlayerTurn;
@@ -199,7 +199,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            _playerTurnCount = 1;
+            _playerTurnCount = 0;
             CurrentSceneState = SceneState.Stage1;
             Debug.Log("Chanege Scene to Stage1");
         }

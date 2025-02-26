@@ -241,28 +241,28 @@ MonoBehaviour:
   GlobalVolumeBGM: 0.5
   GlobalVolumeSE: 0.5
   _audioDataBGM:
-  - AudioClip: {fileID: 8300000, guid: eb73ecdd07da9bf489468c2bbf7887b0, type: 3}
-    VolumeIndex: 0.1
+  - AudioClip: {fileID: 8300000, guid: 6f8e6ed7003e6e64c9d905c6621fb82f, type: 3}
+    VolumeIndex: 0.5
     MaxPitch: 0
     MinPitch: 0
   - AudioClip: {fileID: 8300000, guid: 966c435dab285e743b40a3994178b432, type: 3}
     VolumeIndex: 0.5
     MaxPitch: 0
     MinPitch: 0
-  - AudioClip: {fileID: 8300000, guid: 1ccdfb872c8bfc44e90d31a93054334e, type: 3}
+  - AudioClip: {fileID: 8300000, guid: dd63245684a2ad5438e5688264c551fb, type: 3}
     VolumeIndex: 0.5
     MaxPitch: 0
     MinPitch: 0
   _audioDataSE:
-  - AudioClip: {fileID: 0}
-    VolumeIndex: 0
+  - AudioClip: {fileID: 8300000, guid: 9cd29ea2cc3283d42a8028cf0ce7c672, type: 3}
+    VolumeIndex: 0.5
     MaxPitch: 0
     MinPitch: 0
-  - AudioClip: {fileID: 0}
-    VolumeIndex: 0
+  - AudioClip: {fileID: 8300000, guid: a5ab957017476b1499e9a7e92e228a8b, type: 3}
+    VolumeIndex: 0.5
     MaxPitch: 0
     MinPitch: 0
-  - AudioClip: {fileID: 0}
-    VolumeIndex: 0
+  - AudioClip: {fileID: 8300000, guid: eab0e619951eaf744b75f6381bca65e6, type: 3}
+    VolumeIndex: 0.5
     MaxPitch: 0
     MinPitch: 0
