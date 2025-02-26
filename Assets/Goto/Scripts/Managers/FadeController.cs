@@ -29,7 +29,7 @@ public class FadeController : MonoBehaviour
             await UniTask.Yield(PlayerLoopTiming.Update);
         }
 
-        _fadeMaterial.SetFloat(FadeThresholdID, _fadeInCurve.Evaluate(1f));
+        _fadeMaterial.SetFloat(FadeThresholdID, 1f);
     }
 
     public async UniTaskVoid FadeOut(float fadeTime)
@@ -46,6 +46,11 @@ public class FadeController : MonoBehaviour
             await UniTask.Yield(PlayerLoopTiming.Update);
         }
 
-        _fadeMaterial.SetFloat(FadeThresholdID, _fadeOutCurve.Evaluate(1f));
+        _fadeMaterial.SetFloat(FadeThresholdID, 0f);
+    }
+
+    private void OnDisable()
+    {
+        _fadeMaterial.SetFloat(FadeThresholdID, 1f);
     }
 }
