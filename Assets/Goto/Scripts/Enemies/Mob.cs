@@ -21,7 +21,7 @@ public class Mob : EnemyBase
 
             if (_currentAttackTurnCount <= 0)
             {
-                Vector3 shotVector = (_player.transform.position - this.transform.position).normalized;
+                Vector3 shotVector = (_player.GetPlayerPosition - this.transform.position).normalized;
                 _rigidbody.AddForce(shotVector * _shotPower, ForceMode.Impulse);
 
                 await UniTask.WaitUntil(() => GetVelocity.sqrMagnitude <= 0.1f * 0.1f);
