@@ -238,6 +238,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dca625fe744a1c4d8b6b913cf6bbfad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _audioSourceBGM: {fileID: 2356939441622258973}
+  _audioSourceSE: {fileID: 5418378555637355094}
   GlobalVolumeBGM: 1
   GlobalVolumeSE: 1
   _audioDataBGM:
