@@ -21,18 +21,33 @@ public class Player_Scripts : MonoBehaviour
     private Camera mainCamera;
     private Vector3 initialPosition;
     private float shootTime;
-    private float waitTime=1000.0f;
+    private float waitTime = 1000.0f;
     private float checkDelay = 1.0f; // 速度チェックを開始するまでの遅延時間
 
-    public bool TurnEndFlag= false;
-    public Vector3 GetDragVelocityPosition { get => dragStartPosition- dragPosition;}
+    // ドラッグの最大値
+    public static readonly int PullLimit = 6;
+
+    public bool TurnEndFlag = false;
+    public Vector3 GetDragVelocityPosition { get => dragStartPosition - dragPosition; }
     public Vector3 GetPlayerPosition { get => transform.position; }
 
+    private Vector3 pullMagn;
+    public float GetPullPower { get => Mathf.Min(pullMagn.magnitude,PullLimit); }
+    public float GetBlurGauge { get => blurGauge; }
     [SerializeField]
     // ボールの方向をぼかす度合い　0.0f ~ 1.0f(ぼかさない～ぼかす)
-    private float blurGauge = 0.0f;　
+    private float blurGauge = 0.0f;
+
     [SerializeField]
-    private int ballForce = 30; // ボールに加える力倍率
+    float gauge_speed = 10.0f; //ゲージの左右する速度
+    public float gauge_level = 0f;//ゲージの数値の大きさ
+    float interval = 2.0f;
+    public static readonly float GaugeMax = 1.0f;
+    public static readonly float GaugeMin = 0.0f;
+
+
+    [SerializeField]
+    private int ballForce = 5; // ボールに加える力倍率
 
     [SerializeField]
     private float dragCoefficient = 0.8f; // 速度減衰係数
@@ -57,16 +72,19 @@ public class Player_Scripts : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        blurGauge=BlurUpdate();
+        pullMagn = dragStartPosition - dragPosition;
+        //Debug.Log("Pull値：" + GetPullPower);
         // マウスの左ボタンが押されたとき
-        if (Input.GetMouseButtonDown(0)&& PlayerTurn&&!isShooted)
+        if (Input.GetMouseButtonDown(0) && PlayerTurn && !isShooted)
         {
             dragStartPosition = GetWorldPositionOnPlane(Input.mousePosition, 0);
             isDragging = true;
         }
-        if (isDragging) {
+        if (isDragging)
+        {
 
-        dragPosition = GetWorldPositionOnPlane(Input.mousePosition, 0);
+            dragPosition = GetWorldPositionOnPlane(Input.mousePosition, 0);
             transform.rotation = Quaternion.LookRotation(-GetDragVelocityPosition);
         }
         // マウスの左ボタンが離されたとき
@@ -87,9 +105,10 @@ public class Player_Scripts : MonoBehaviour
 
             // ボールの方向をぼかす
             force = BlurBall(force, blurGauge);
-
-            force = force * ballForce;
-           // transform.rotation = Quaternion.LookRotation(-force);
+            //Debug.Log("Blur値："+blurGauge);
+   
+            force = force * ballForce* GetPullPower;
+            //Debug.Log("Pull値：" + pullForce.magnitude + "force値: " + force);
             rb.AddForce(force, ForceMode.Impulse);
             //Debug.Log("Drag Direction: " + force);
 
@@ -98,7 +117,7 @@ public class Player_Scripts : MonoBehaviour
         }
         shootTime -= 1.0f;
 
-        if (isShooted&&PlayerTurn)
+        if (isShooted && PlayerTurn)
         {
             transform.rotation = Quaternion.LookRotation(-rb.velocity);
         }
@@ -142,7 +161,14 @@ public class Player_Scripts : MonoBehaviour
     // ボールの方向をぼかす
     private Vector3 BlurBall(Vector3 direction, float blurGauge)
     {
-        return direction * (1 - blurGauge) + Random.insideUnitSphere * blurGauge;
+        float invblur = 1 - blurGauge;
+        float maxAngle = Mathf.Lerp(0, 90, invblur); // blurGaugeに基づいて最大角度を設定
+        Vector3 randomDirection = Quaternion.Euler(0, Random.Range(-maxAngle, maxAngle), 0) * direction;
+
+        //Debug.Log("blur元値：" + direction + " 変更後値:" + randomDirection.normalized * direction.magnitude);
+        return randomDirection.normalized * direction.magnitude;
+
+
     }
 
     private Vector3 GetWorldPositionOnPlane(Vector3 screenPosition, float z)
@@ -166,4 +192,15 @@ public class Player_Scripts : MonoBehaviour
         TurnEndFlag = false;
     }
 
+    private float  BlurUpdate()
+    {
+        gauge_level += gauge_speed / interval * Time.deltaTime;
+        if (gauge_level > GaugeMax || gauge_level < GaugeMin)
+        {
+            gauge_speed *= -1.0f;
+        }
+
+        return gauge_level;
+    }
 }
+
