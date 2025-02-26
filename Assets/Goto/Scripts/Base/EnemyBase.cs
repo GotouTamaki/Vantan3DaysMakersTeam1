@@ -36,7 +36,7 @@ public abstract class EnemyBase : MonoBehaviour
     protected virtual void Start()
     {
         _outOfBoundsChecker = FindAnyObjectByType<OutOfBoundsChecker>();
-        _audioManager = FindAnyObjectByType<AudioManager>();
+        //_audioManager = FindAnyObjectByType<AudioManager>();
         _rigidbody = GetComponent<Rigidbody>();
         _currentAttackTurnCount = _attackTurnCount;
     }
@@ -50,7 +50,7 @@ public abstract class EnemyBase : MonoBehaviour
             foreach (ContactPoint point in collision.contacts)
             {
                 Instantiate(_hitEffect, point.point, _hitEffect.transform.rotation);
-                _audioManager.PlayClipPitchedSE(1);
+                AudioManager.Instance.PlayClipPitchedSE(1);
             }
         }
     }
