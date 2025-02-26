@@ -62,12 +62,16 @@ public class Player_Scripts : MonoBehaviour
 
     private void OnEnable()
     {
-        FindAnyObjectByType<TurnActionManager>().SwitchPlayerTurn.AddListener(SwitchPlaerActive);
+        TurnActionManager turnActionMnager = FindAnyObjectByType<TurnActionManager>();
+        turnActionMnager.SwitchPlayerTurn.AddListener(SwitchPlaerActive);
+        turnActionMnager.SwitchPlayerTurn.AddListener(EndInitialize);
     }
 
     private void OnDisable()
     {
-        FindAnyObjectByType<TurnActionManager>().SwitchPlayerTurn.RemoveListener(SwitchPlaerActive);
+        TurnActionManager turnActionMnager = FindAnyObjectByType<TurnActionManager>();
+        turnActionMnager.SwitchPlayerTurn.RemoveListener(SwitchPlaerActive);
+        turnActionMnager.SwitchPlayerTurn.RemoveListener(EndInitialize);
     }
     // Start is called before the first frame update
     void Start()
@@ -204,6 +208,7 @@ public class Player_Scripts : MonoBehaviour
     // プレイヤーのターンを切り替えた際の初期化処理
     private void SwitchPlaerActive()
     {
+        Debug.LogWarning("SwitchPlayerActive");
         PlayerTurn = true;
         isShooted = false;
         TurnEndFlag = false;
@@ -238,6 +243,13 @@ public class Player_Scripts : MonoBehaviour
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
     }
-
+    private void EndInitialize()
+    {/*
+        Debug.LogWarning("EndInitialize");
+        isShooted = false;
+        TurnEndFlag = false;
+        PlayerTurn = false;
+        */
+    }
 }
 

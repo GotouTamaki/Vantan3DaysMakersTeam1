@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
 
     //プレイヤーのターン数を格納する変数
     private int _playerTurnCount = 1;
+    public int PlayerTurnCount => _playerTurnCount;
 
 
 
@@ -224,7 +225,7 @@ public class GameManager : MonoBehaviour
 
         _enemyManager.CheckEnemiesIsAlive();
 
-        Debug.Log("PlayerTurnCount:" + _playerTurnCount);
+        //Debug.Log("PlayerTurnCount:" + _playerTurnCount);
 
      
 

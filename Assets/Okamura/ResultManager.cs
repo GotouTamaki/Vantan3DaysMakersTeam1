@@ -16,15 +16,19 @@ public class ResultManager : MonoBehaviour
     [SerializeField] TMP_Text _penguinComment;
     [SerializeField] string[] _penguinComments;
     [SerializeField] GameObject _homeButton;
+    [SerializeField] float _scoreIndex = 10;
+
+    [SerializeField] Button _returnTitleButton;
     private void Awake()
     {
         _gameManager = FindAnyObjectByType<GameManager>();
     }
     private async void Start()
     {
+
         await UniTask.WaitForSeconds(_waitTimeDuration);
         //ここのマジックナンバーは後にGameManagerから数字を取得する形にする
-        _turnCntText.text = _strFrontTurnCnt + 1 + _strBackTurnCnt;
+        _turnCntText.text = _strFrontTurnCnt + _gameManager.PlayerTurnCount + _strBackTurnCnt;
 
         await UniTask.WaitForSeconds(_waitTimeDuration);
 
@@ -32,7 +36,8 @@ public class ResultManager : MonoBehaviour
         //星の表示数をgameManagerから持ってくる
         //１～３
         int scorerdNumber = 0;
-        for(int i = 0; i < 3; i++)
+        scorerdNumber = (int)(_gameManager.PlayerTurnCount / _scoreIndex);
+        for (int i = 0; i < 3; i++)
         {
             if(i < scorerdNumber)
             {

@@ -1121,6 +1121,8 @@ MonoBehaviour:
   - "NICE!!! BRO!!!\u200B"
   - "PERFECT!!! BRO!!!\u200B"
   _homeButton: {fileID: 1406352001}
+  _scoreIndex: 10
+  _returnTitleButton: {fileID: 0}
 --- !u!4 &1433245033
 Transform:
   m_ObjectHideFlags: 0
