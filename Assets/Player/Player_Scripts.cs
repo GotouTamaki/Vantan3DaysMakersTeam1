@@ -33,6 +33,9 @@ public class Player_Scripts : MonoBehaviour
     private Vector3 pullMagn;
     public float GetPullPower { get => Mathf.Min(pullMagn.magnitude,PullLimit); }
     public float GetBlurGauge { get => blurGauge; }
+
+    public bool GetIsShooted { get => isShooted; }
+
     [SerializeField]
     // ボールの方向をぼかす度合い　0.0f ~ 1.0f(ぼかさない～ぼかす)
     private float blurGauge = 0.0f;
