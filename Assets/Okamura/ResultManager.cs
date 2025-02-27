@@ -16,6 +16,7 @@ public class ResultManager : MonoBehaviour
     [SerializeField] string[] _penguinCommentsScore2;
     [SerializeField] string[] _penguinCommentsScore3;
     [SerializeField] float _scoreIndex = 10;
+    [SerializeField] private int[] _scoreThreshold;
 
     [SerializeField] Button _returnTitleButton;
     private void Awake()
@@ -38,25 +39,25 @@ public class ResultManager : MonoBehaviour
 
         await UniTask.WaitForSeconds(_waitTimeDuration / 2);
 
-        if(10 > GameManager.Instance.PlayerTurnCount)
+        if(_scoreThreshold[1] > GameManager.Instance.PlayerTurnCount)
         {
             _reviewImages[1].sprite = _enabledImage;
         }
 
         await UniTask.WaitForSeconds(_waitTimeDuration / 2);
 
-        if (6 > GameManager.Instance.PlayerTurnCount)
+        if (_scoreThreshold[0] > GameManager.Instance.PlayerTurnCount)
         {
             _reviewImages[2].sprite = _enabledImage;
         }
 
         await UniTask.WaitForSeconds(_waitTimeDuration / 2);
 
-        if (6 > GameManager.Instance.PlayerTurnCount)
+        if (_scoreThreshold[0] > GameManager.Instance.PlayerTurnCount)
         {
             _penguinComment.text = _penguinCommentsScore3[Random.Range(0, _penguinCommentsScore3.Length)];
         }
-        else if (10 > GameManager.Instance.PlayerTurnCount)
+        else if (_scoreThreshold[1] > GameManager.Instance.PlayerTurnCount)
         {
             _penguinComment.text = _penguinCommentsScore2[Random.Range(0, _penguinCommentsScore2.Length)];
         }
