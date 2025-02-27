@@ -28,16 +28,16 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NoiseTex:
-        m_Texture: {fileID: 2800000, guid: 8ef605a3435a53e4fb4765b0741740bd, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9fc30f4cab7982246bfeb06765b2c34a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DissolveAmount: 0
+    - _DissolveAmount: 1.2
     - _EdgeWidth: 0.05
     - _FadeThreshold: 0.68
     m_Colors:
-    - _EdgeColor: {r: 0, g: 0.61287016, b: 0.7490197, a: 1}
+    - _EdgeColor: {r: 0.44845134, g: 0.84345317, b: 0.93207544, a: 1}
     - _FadeColor: {r: 0, g: 0, b: 0, a: 1}
-    - _MainColor: {r: 1, g: 1, b: 1, a: 1}
+    - _MainColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
