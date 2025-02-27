@@ -9,13 +9,18 @@ public class FadeController : MonoBehaviour
     [SerializeField] private AnimationCurve _fadeInCurve;
     [SerializeField] private AnimationCurve _fadeOutCurve;
 
+    private void Start()
+    {
+        GameManager.Instance._fadeController = this;
+    }
+
 #if UNITY_EDITOR
     public void TestFadeIn(float fadeTime) => FadeIn(fadeTime).Forget();
 
     public void TestFadeOut(float fadeTime) => FadeOut(fadeTime).Forget();
 #endif
 
-    public async UniTaskVoid FadeIn(float fadeTime)
+    public async UniTask FadeIn(float fadeTime)
     {
         _fadeMaterial.SetFloat(FadeThresholdID, 0f);
         float elapsed = 0f;
@@ -29,12 +34,12 @@ public class FadeController : MonoBehaviour
             await UniTask.Yield(PlayerLoopTiming.Update);
         }
 
-        _fadeMaterial.SetFloat(FadeThresholdID, 1f);
+        _fadeMaterial.SetFloat(FadeThresholdID, 1.2f);
     }
 
-    public async UniTaskVoid FadeOut(float fadeTime)
+    public async UniTask FadeOut(float fadeTime)
     {
-        _fadeMaterial.SetFloat(FadeThresholdID, 1f);
+        _fadeMaterial.SetFloat(FadeThresholdID, 1.2f);
         float elapsed = 0f;
 
         while (elapsed < fadeTime)
@@ -51,6 +56,6 @@ public class FadeController : MonoBehaviour
 
     private void OnDisable()
     {
-        _fadeMaterial.SetFloat(FadeThresholdID, 1f);
+        _fadeMaterial.SetFloat(FadeThresholdID, 1.2f);
     }
 }

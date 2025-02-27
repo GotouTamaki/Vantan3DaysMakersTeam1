@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
+using Cysharp.Threading.Tasks;
 
 
 //�{Manager�̖����A�V�[���̑J�ڊǗ����s��
@@ -65,6 +66,7 @@ public class GameManager : MonoBehaviour
 
     public EnemyManager _enemyManager;
     public OutOfBoundsChecker _outOfBoundsChecker;
+    public FadeController _fadeController;
 
 
     public SceneState CurrentSceneState
@@ -76,7 +78,7 @@ public class GameManager : MonoBehaviour
             if (_currentSceneState != value)
             {
                 _currentSceneState = value;
-                switchScene();
+                switchScene().Forget();
             }
         }
 
@@ -112,7 +114,7 @@ public class GameManager : MonoBehaviour
         _playerScripts = FindAnyObjectByType<Player_Scripts>();
         ////kari
         currentGameState = GameState.Title;
-        _currentSceneState  = SceneState.Title;
+        _currentSceneState = SceneState.Title;
     }
 
     void Update()
@@ -153,8 +155,11 @@ public class GameManager : MonoBehaviour
     //���݃A�N�e�B�u�ɂȂ��Ă���V�[�����擾���āAState�̍X�V���s���@�\���K�v�ɂȂ�
 
 
-    private void switchScene()
+    private async UniTask switchScene()
     {
+        await _fadeController.FadeOut(1f);
+        await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
+
         switch (CurrentSceneState)
         {
             case SceneState.Title:
@@ -181,6 +186,9 @@ public class GameManager : MonoBehaviour
                 SceneController.Instance.LoadResultScene();
                 break;
         }
+
+        await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
+        await _fadeController.FadeIn(1f);
     }
 
 
@@ -223,7 +231,7 @@ public class GameManager : MonoBehaviour
         //currentGameState = GameState.PlayerTurn;
         if (!_playerScripts || !_enemyManager || !_outOfBoundsChecker)
         {
-            Debug.LogError("not exist playerScripts or enemyManager or outOfBounceChecker");
+            //Debug.LogError("not exist playerScripts or enemyManager or outOfBounceChecker");
             return;
         }
 
@@ -231,7 +239,7 @@ public class GameManager : MonoBehaviour
 
         //Debug.Log("PlayerTurnCount:" + _playerTurnCount);
 
-     
+
 
 
 
@@ -270,7 +278,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("PlayerStageOut!!");
         }
 
-       
+
         if (currentGameState == GameState.PlayerTurn && _playerScripts.CheckPlayerEnd())
         {
             //�v���C���[�̍s�����I���������Ƀ^�[������1�ǉ�����
@@ -283,7 +291,7 @@ public class GameManager : MonoBehaviour
 
         if (currentGameState == GameState.EnemyTurn && _enemyManager.IsTurnChangeVelocity)
         {
-            
+
             Debug.Log("StateChange PlayerTurn");
             currentGameState = GameState.InAnimation;
             OnGameStateChanged(GameState.PlayerTurn);
@@ -291,10 +299,10 @@ public class GameManager : MonoBehaviour
 
 
 
-   //�Q�[���N���A���菈���i�{�X�����S������Q�[���N���A�ɂ���j
+        //�Q�[���N���A���菈���i�{�X�����S������Q�[���N���A�ɂ���j
         if (!_enemyManager.IsBossAlive)
         {
-           
+
             Debug.Log("GameClear!!");
             Debug.Log("PlayerTurnCount:" + _playerTurnCount);
             currentGameState = GameState.GameClear;
@@ -312,8 +320,8 @@ public class GameManager : MonoBehaviour
         //{
 
         //    if (CurrentSceneState == SceneState.Stage1 && currentGameState == GameState.GameClear)//Stage�P���N���A������Stage2�ɑJ�ڂ���
-        //    { 
-        //        
+        //    {
+        //
         //    }
         //}
 
@@ -334,7 +342,7 @@ public class GameManager : MonoBehaviour
 
 
         if (Input.GetKeyDown(KeyCode.Space))
-        { 
+        {
             currentGameState = GameState.Title;
             Debug.Log("Change Scene to Title");
             CurrentSceneState = SceneState.Title;

@@ -5,7 +5,7 @@ Shader "Custom/DissolveShader"
         [HDR] _MainColor ("Main Color", Color) = (0, 0, 0, 1)
         _MainTex ("Main Texture", 2D) = "white" {}
         _NoiseTex ("Noise Texture", 2D) = "white" {}
-        _DissolveAmount ("Dissolve Amount", Range(0, 1)) = 0.5
+        _DissolveAmount ("Dissolve Amount", Range(0, 1.2)) = 0.5
         [HDR] _EdgeColor ("Edge Color", Color) = (0, 0, 1, 1)
         _EdgeWidth ("Edge Width", Range(0,0.2)) = 0.05
     }
