@@ -1,7 +1,7 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -33,6 +33,7 @@ public class SceneController : MonoBehaviour
     [SerializeField, Header("Optionシーンファイル名")]
     private string _optionSceneName;
 
+    private FadeController _fadeController;
 
     //SceneControllerのインスタンスを格納する変数
     public static SceneController Instance { get; private set; }
@@ -51,6 +52,10 @@ public class SceneController : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        _fadeController = FindAnyObjectByType<FadeController>();
+    }
 
     /// <summary>
     /// 引数で指定されたシーン名のシーンの読み込みを行う
